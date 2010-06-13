@@ -130,6 +130,16 @@
 		</div>
 </div>
 
+<div style="width: 200px; height: 50px; position: absolute; left: 50px; top: 10px;">
+<!--
+	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: #111111; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;"></div>
+	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;"></div>
+-->
+
+	<div style="width: 100px; position: absolute; left: 0px; top: 0px; color: white; font-family: Lucida Grande; font-size: 10pt; text-align: center; text-shadow: white 0px 0px 5px;">Location</div>
+</div>
+
+<!--
 <div style="width: 300px; position: absolute; left: 50px; top: 50px;">
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;"></div>
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;"></div>
@@ -169,18 +179,18 @@
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;"></div>
 
 	<div style="position: relative; padding: 15px 10px;">
-		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" /><span style="margin-left: 5px;">Show star labels</span></div>
-		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" /><span style="margin-left: 5px;">Show planet labels</span></div>
-		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" /><span style="margin-left: 5px;">Show nebula labels</span></div>
+		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" checked="true" disabled="true" /><span style="margin-left: 5px;">Show star labels</span></div>
+		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" checked="true" disabled="true" /><span style="margin-left: 5px;">Show planet labels</span></div>
+		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" checked="true" disabled="true" /><span style="margin-left: 5px;">Show nebula labels</span></div>
 
 		<hr style="position: relative; margin: 15px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;" />
 
-		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" /><span style="margin-left: 5px;">Show grid</span></div>
-		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" /><span style="margin-left: 5px;">Show horizon</span></div>
+		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" checked="true" disabled="true" /><span style="margin-left: 5px;">Show grid</span></div>
+		<div style="padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;"><input type="checkbox" disabled="true" /><span style="margin-left: 5px;">Show horizon</span></div>
 	</div>
 </div>
 
-<div style="width: 300px; height: 160px; position: absolute; left: 750px; top: 50px;">
+<div style="width: 200px; height: 180px; position: absolute; left: 750px; top: 50px;">
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;"></div>
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;"></div>
 
@@ -205,13 +215,17 @@
 		<input type="button" value="-" onmousedown="newadj(this, 'latadj', -1);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 40px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
 	</div>
 
-	<div style="width: 40px; height: 80px; position: absolute; left: 80px; top: 40px;">
+	<div style="width: 40px; height: 120px; position: absolute; left: 80px; top: 40px;">
 		<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; opacity: 0.15;"></div>
 
-		<hr style="position: relative; margin: 40px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;" />
+		<hr style="position: relative; margin: 20px 10px 0px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;" />
+		<hr style="position: relative; margin: 40px 10px 0px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;" />
+		<hr style="position: relative; margin: 40px 10px 0px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;" />
 
-		<input type="button" value="+" onmousedown="newadj(this, 'lonadj', 1);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 0px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
-		<input type="button" value="-" onmousedown="newadj(this, 'lonadj', -1);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 40px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
+		<input type="button" value="++" onmousedown="newadj(this, 'lonadj', 10);" style="width: 40px; height: 20px; position: absolute; left: 0px; top: 0px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: #999999; font-size: 10pt; font-weight: bold;" />
+		<input type="button" value="+" onmousedown="newadj(this, 'lonadj', 1);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 20px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
+		<input type="button" value="-" onmousedown="newadj(this, 'lonadj', -1);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 60px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
+		<input type="button" value="--" onmousedown="newadj(this, 'lonadj', -10);" style="width: 40px; height: 20px; position: absolute; left: 0px; top: 100px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: #999999; font-size: 10pt; font-weight: bold;" />
 	</div>
 
 	<div style="width: 40px; height: 80px; position: absolute; left: 140px; top: 40px;">
@@ -222,6 +236,7 @@
 		<input type="button" value="+" onmousedown="newadj(this, 'zmadj', 10);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 0px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
 		<input type="button" value="-" onmousedown="newadj(this, 'zmadj', -10);" style="width: 40px; height: 40px; position: absolute; left: 0px; top: 40px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-size: 16pt; font-weight: bold;" />
 	</div>
+-->
 
 	</body>
 </html>
