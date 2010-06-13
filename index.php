@@ -39,7 +39,7 @@
 	</head>
 	<body onload="init();">  
 	    <canvas id="tutorial" width="3600" height="1800"></canvas>
-<div style="display: none;">
+<div>
 		<div style="width: 155px; height: 60px; position: absolute; left: 50px; bottom: 20px; padding: 2px;">
 			<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75"></div>
 			<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15"></div>
@@ -119,6 +119,7 @@
 			</div>
 		</div>
 
+<!--
 		<div style="position: absolute; left: 50%; top: 50%;">
 			<div style="width: 200px; height: 80px; position: absolute; left: -100px; top: -40px;">
 				<input type="button" onmousedown="newadj(this, 'obslat', 1);" value="&nbsp;" style="width: 40px; height: 40px; position: absolute; left: 40px; top: 0px; border: 0px; background-color: transparent; color: white; font-size: 12pt; vertical-align: middle;" />
@@ -128,19 +129,11 @@
 				<input type="button" onmousedown="newadj(this, 'zmadj', -100);" value="-" style="width: 40px; height: 40px; position: absolute; left: 160px; top: 40px; border: 0px; background-color: transparent; color: white; font-size: 12pt; vertical-align: middle;" />
 			</div>
 		</div>
-</div>
-
-<div style="width: 200px; height: 50px; position: absolute; left: 50px; top: 10px;">
-<!--
-	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: #111111; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;"></div>
-	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;"></div>
 -->
-
-	<div style="width: 100px; position: absolute; left: 0px; top: 0px; color: white; font-family: Lucida Grande; font-size: 10pt; text-align: center; text-shadow: white 0px 0px 5px;">Location</div>
 </div>
 
-<!--
-<div style="width: 300px; position: absolute; left: 50px; top: 50px;">
+
+<div style="width: 300px; position: absolute; left: 50px; top: 20px;">
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;"></div>
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;"></div>
 
@@ -173,6 +166,7 @@
 		</div>
 	</div>
 </div>
+<!--
 
 <div style="width: 300px; position: absolute; left: 400px; top: 50px;">
 	<div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;"></div>

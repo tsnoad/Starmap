@@ -49,83 +49,83 @@
 	$y = gmdate("Y");
 	$m = gmdate("m");
 	$D = gmdate("d");
-
+	
 	//convert date into the epoch expected by these formulas. julian?
 	$d = 367 * $y - floor((7 * ($y + floor(($m + 9) / 12))) / 4) + floor((275 * $m) / 9) + $D - 730530;
-
+	
 	//seconds since the start of the day
 	$UT_seconds = fmod(time(), 86400);
 	//fraction of a day, since the start of the day
 	$UT = $UT_seconds / (60 * 60 * 24);
-
+	
 	//add the day fraction to the complete days
 	$d += $UT;
-
+	
 	//calculate the obliquity of the ecliptic
 	//IE earths current tilt
-    $ecl = deg2rad(23.4393 - 0.0000003563 * $d);
-
-
+	$ecl = deg2rad(23.4393 - 0.0000003563 * $d);
+	
+	
 	/*
 	 * Calculate the position of the sun
 	 */
-
+	
 	//predefined variables for the sun
 	//argument of perihelion
-    $w = deg2rad(282.9404 + 0.0000470935 * $d);
+	$w = deg2rad(282.9404 + 0.0000470935 * $d);
 	//eccentricity
-    $e = 0.016709 - 0.000000001151 * $d;
+	$e = 0.016709 - 0.000000001151 * $d;
 	//mean anomaly
-    $M = deg2rad(356.0470 + 0.9856002585 * $d);
-
+	$M = deg2rad(356.0470 + 0.9856002585 * $d);
+	
 	//calculate eccentric anomaly
 	$E = $M + (($e * sin($M)) * (1 + ($e * cos($M))));
-
-    $xv = cos($E) - $e;
-    $yv = sqrt(1.0 - $e * $e) * sin($E);
-
+	
+	$xv = cos($E) - $e;
+	$yv = sqrt(1.0 - $e * $e) * sin($E);
+	
 	//calculate sun's true anomoly
-    $v = atan2($yv, $xv);
+	$v = atan2($yv, $xv);
 	//and distance
-    $r = sqrt($xv * $xv + $yv * $yv);
-
+	$r = sqrt($xv * $xv + $yv * $yv);
+	
 	//true longitude
-    $lonsun = $v + $w;
-
+	$lonsun = $v + $w;
+	
 	//calculate ecliptic rectangular geocentric coordinates
 	//zs will always be zero since the sun is always on the ecliptic
-    $xs = $r * cos($lonsun);
-    $ys = $r * sin($lonsun);
-
+	$xs = $r * cos($lonsun);
+	$ys = $r * sin($lonsun);
+	
 	//calculate equatorial rectangular geocentric coordinates
-    $xe = $xs;
-    $ye = $ys * cos($ecl);
-    $ze = $ys * sin($ecl);
-
+	$xe = $xs;
+	$ye = $ys * cos($ecl);
+	$ze = $ys * sin($ecl);
+	
 	//calculate the sun's right ascencion and declination
-    $RA = atan2($ye, $xe);
-    $Dec = atan2($ze, sqrt($xe * $xe + $ye * $ye));
-
+	$RA = atan2($ye, $xe);
+	$Dec = atan2($ze, sqrt($xe * $xe + $ye * $ye));
+	
 	//add to the json string with all the other stars
 	//so that it's position on the skydome will be calculated, and drawn
 	$json_pass .= json_encode(array("n" => "sun", "x" => rad2deg($RA), "y" => rad2deg($Dec), "r" => 4, "c" => "#ffffff")).",";
 	//add to array of planets so that it will be labelled
 	$json_planets['sun']['n'] = ucwords('sun');
-
-
+	
+	
 	/*
 	 * Calculate the positions of the moon and the planets
 	 */
-
+	
 	//for the moon
 	//predefined variables
 	$moon = true;
 	//longitude of the ascending node
-    $N = deg2rad(125.1228 - 0.0529538083 * $d);
+	$N = deg2rad(125.1228 - 0.0529538083 * $d);
 	//inclination to the ecliptic
-    $i = deg2rad(5.1454);
+	$i = deg2rad(5.1454);
 	//argument of perihelion
-    $w = deg2rad(318.0634 + 0.1643573223 * $d);
+	$w = deg2rad(318.0634 + 0.1643573223 * $d);
 	//semi-major axis, or mean distance from Sun
 	$a = 60.2666;
 	//eccentricity
@@ -134,38 +134,38 @@
 	$M = deg2rad(115.3654 + 13.0649929509 * $d);
 	//add to an array that we can loop through
 	$planets['moon'] = array("moon" => $moon, "color" => "white", "N" => $N, "i" => $i, "w" => $w, "a" => $a, "e" => $e, "M" => $M);
-
+	
 	//for venus
 	//predefined variables
 	$moon = false;
-    $N =  deg2rad(76.6799 + 0.0000246590 * $d);
-    $i = deg2rad(3.3946 + 0.0000000275 * $d);
-    $w =  deg2rad(54.8910 + 0.0000138374 * $d);
-    $a = 0.723330;
-    $e = 0.006773 - 0.000000001302 * $d;
-    $M =  deg2rad(48.0052 + 1.6021302244 * $d);
+	$N =  deg2rad(76.6799 + 0.0000246590 * $d);
+	$i = deg2rad(3.3946 + 0.0000000275 * $d);
+	$w =  deg2rad(54.8910 + 0.0000138374 * $d);
+	$a = 0.723330;
+	$e = 0.006773 - 0.000000001302 * $d;
+	$M =  deg2rad(48.0052 + 1.6021302244 * $d);
 	$planets['venus'] = array("moon" => $moon, "color" => "white", "N" => $N, "i" => $i, "w" => $w, "a" => $a, "e" => $e, "M" => $M);
-
+	
 	//for mars
 	//predefined variables
 	$moon = false;
-    $N =  deg2rad(49.5574 + 0.0000211081 * $d);
-    $i = deg2rad(1.8497 - 0.0000000178 * $d);
-    $w = deg2rad(286.5016 + 0.0000292961 * $d);
-    $a = 1.523688;
-    $e = 0.093405 + 0.000000002516 * $d;
-    $M =  deg2rad(18.6021 + 0.5240207766 * $d);
+	$N =  deg2rad(49.5574 + 0.0000211081 * $d);
+	$i = deg2rad(1.8497 - 0.0000000178 * $d);
+	$w = deg2rad(286.5016 + 0.0000292961 * $d);
+	$a = 1.523688;
+	$e = 0.093405 + 0.000000002516 * $d;
+	$M =  deg2rad(18.6021 + 0.5240207766 * $d);
 	$planets['mars'] = array("moon" => $moon, "color" => "white", "N" => $N, "i" => $i, "w" => $w, "a" => $a, "e" => $e, "M" => $M);
-
+	
 	//for jupiter
 	//predefined variables
 	$moon = false;
-    $N = deg2rad(100.4542 + 0.0000276854 * $d);
-    $i = deg2rad(1.3030 - 0.0000001557 * $d);
-    $w = deg2rad(273.8777 + 0.0000164505 * $d);
-    $a = 5.20256;
-    $e = 0.048498 + 0.000000004469 * $d;
-    $M =  deg2rad(19.8950 + 0.0830853001 * $d);
+	$N = deg2rad(100.4542 + 0.0000276854 * $d);
+	$i = deg2rad(1.3030 - 0.0000001557 * $d);
+	$w = deg2rad(273.8777 + 0.0000164505 * $d);
+	$a = 5.20256;
+	$e = 0.048498 + 0.000000004469 * $d;
+	$M =  deg2rad(19.8950 + 0.0830853001 * $d);
 	$planets['jupiter'] = array("moon" => $moon, "color" => "white", "N" => $N, "i" => $i, "w" => $w, "a" => $a, "e" => $e, "M" => $M);
 
 
