@@ -6,7 +6,7 @@
 <html>
 	<head>
 		<title></title>
-		<script type="text/javascript" src="prototype.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
 		<script type="text/javascript" src="script.js"></script>
 
 	    <script type="text/javascript">

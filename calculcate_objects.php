@@ -108,7 +108,7 @@
 
 	//add to the json string with all the other stars
 	//so that it's position on the skydome will be calculated, and drawn
-	$json_pass .= json_encode(array("n" => "sun", "x" => 360 - rad2deg($RA), "y" => -1 * rad2deg($Dec), "r" => 4, "c" => "#ffffff")).",";
+	$json_pass .= json_encode(array("n" => "sun", "x" => rad2deg($RA), "y" => rad2deg($Dec), "r" => 4, "c" => "#ffffff")).",";
 	//add to array of planets so that it will be labelled
 	$json_planets['sun']['n'] = ucwords('sun');
 
@@ -235,7 +235,7 @@
 	
 		//add to the json string with all the other stars
 		//so that it's position on the skydome will be calculated, and drawn
-		$json_pass .= json_encode(array("n" => $planet_name, "x" => 360 - rad2deg($RA), "y" => -1 * rad2deg($Dec), "r" => 2, "c" => $planet['color'])).",";
+		$json_pass .= json_encode(array("n" => $planet_name, "x" => rad2deg($RA), "y" => rad2deg($Dec), "r" => 2, "c" => $planet['color'])).",";
 		//add to array of planets so that it will be labelled
 		$json_planets[$planet_name]['n'] = ucwords($planet_name);
 	}
@@ -248,31 +248,31 @@
 	//Messier 45: Pleiades
 	$RA = 3 * 15 + 47 * 0.25;
 	$Dec = 24 + 7 * 0.25;
-	$json_pass .= json_encode(array("n" => "M45", "x" => 360 - $RA, "y" => -1 * $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
+	$json_pass .= json_encode(array("n" => "M45", "x" => $RA, "y" => $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
 	$json_planets['M45']['n'] = ucwords("M45");
 
 	//Messier 31: Andromeda Galaxy
 	$RA = 0 * 15 + 42 * 0.25;
 	$Dec = 41 + 16 * 0.25;
-	$json_pass .= json_encode(array("n" => "M31", "x" => 360 - $RA, "y" => -1 * $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
+	$json_pass .= json_encode(array("n" => "M31", "x" => $RA, "y" => $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
 	$json_planets['M31']['n'] = ucwords("M31");
 
 	//Messier 7: Ptolemy Cluster
 	$RA = 17 * 15 + 53.9 * 0.25;
 	$Dec = -1 * (34 + 49 * 0.25);
-	$json_pass .= json_encode(array("n" => "M7", "x" => 360 - $RA, "y" => -1 * $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
+	$json_pass .= json_encode(array("n" => "M7", "x" => $RA, "y" => $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
 	$json_planets['M7']['n'] = ucwords("M7");
 
 	//Messier 44: Beehive Cluster
 	$RA = 8 * 15 + 40.4 * 0.25;
 	$Dec = 19 + 41 * 0.25;
-	$json_pass .= json_encode(array("n" => "M44", "x" => 360 - $RA, "y" => -1 * $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
+	$json_pass .= json_encode(array("n" => "M44", "x" => $RA, "y" => $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
 	$json_planets['M44']['n'] = ucwords("M44");
 
 	//Messier 42: Orion Nebula
 	$RA = 5 * 15 + 35 * 0.25;
 	$Dec = -1 * (5 + 23 * 0.25);
-	$json_pass .= json_encode(array("n" => "M42", "x" => 360 - $RA, "y" => -1 * $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
+	$json_pass .= json_encode(array("n" => "M42", "x" => $RA, "y" => $Dec, "r" => 1, "c" => "rgba(0, 0, 0, 0)")).",";
 	$json_planets['M42']['n'] = ucwords("M42");
 
 
