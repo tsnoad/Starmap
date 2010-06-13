@@ -378,12 +378,13 @@ function draw() {
 			var i = stars[starid]['x'];
 	
 			//reverse right ascenction
-			i = 360 - i;
+/* 			i = 360 - i; */
+				i += 180;
 	
 	
 			//Whenever we cross the equator and have to rotate the entire screen
 			//we need add 180 to the longitude offset, so the stars arn't upside down
-			if (obsdec_tmp >= 0) {
+			if (obsdec_tmp < 0) {
 				j *= -1;
 			} else {
 				i += 180;
