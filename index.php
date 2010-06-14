@@ -1,5 +1,5 @@
 <?php
-	require("calculcate_objects.php");
+	require("calculate_objects.php");
 ?>
 
 <!DOCTYPE HTML>
