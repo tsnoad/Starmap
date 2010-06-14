@@ -185,6 +185,16 @@
 		
 		//calculate eccentric anomaly
 		$E = $M + (($e * sin($M)) * (1 + ($e * cos($M))));
+
+/*
+		//correct for lousy eccentricity
+		if ($planet_name == "mars" && $e > 0.05) {
+			$E0 = $E;
+			$E1 = $E0 - ($E0 - $e * sin($E0) - $M) / (1 - $e * cos($E0));
+
+			$E = $E1;
+		}
+*/
 	
 		$xv = $a * (cos($E) - $e);
 		$yv = $a * (sqrt(1.0 - ($e * $e)) * sin($E));
