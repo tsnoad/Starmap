@@ -566,7 +566,7 @@ if (planets) {
 		if (!planets[i]['x']) continue;
 
 		ctx.fillStyle = "#000000";
-		ctx.font = "8pt Lucida Grande";
+		ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
 
@@ -618,7 +618,7 @@ if (planets) {
 		ctx.stroke();
 	
 		ctx.fillStyle = "rgba(255, 255, 255, 0.5);";
-		ctx.font = "8pt Lucida Grande";
+		ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
 		ctx.fillText(skoon, skoox, skooy);

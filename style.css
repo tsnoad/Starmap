@@ -21,10 +21,10 @@ canvas {
 
 /* Specific control box styles */
 .container_latlon {
-	width: 155px; height: 60px; left: 50px; bottom: 20px;
+	width: 155px; height: 60px; left: 305px; bottom: 20px;
 }
 .container_date {
-	width: 235px; height: 60px; left: 225px; bottom: 20px;
+	width: 235px; height: 60px; left: 50px; bottom: 20px;
 }
 .container_location {
 	width: 300px; left: 50px; top: 20px;
@@ -41,7 +41,7 @@ canvas {
 		left: 80px;
 	}
 		.container_lat_minor_ctrls, .container_lon_minor_ctrls, .container_lat_major_ctrls, .container_lon_major_ctrls {
-			position: relative; vertical-align: middle; font-family: Lucida Grande;
+			position: relative; vertical-align: baseline; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana;
 		}
 		.container_lat_minor_ctrls, .container_lon_minor_ctrls {
 			font-size: 8pt;
@@ -78,7 +78,7 @@ canvas {
 		width: 30px; left: 200px;
 	}
 		.container_year_ctrls, .container_month_ctrls, .container_day_ctrls, .container_hour_ctrls, .container_minute_ctrls {
-			position: relative; font-family: Lucida Grande; font-size: 8pt;
+			position: relative; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
 		}
 			.container_year_ctrl_sep, .container_month_ctrl_sep, .container_hour_ctrl_sep, .container_minute_ctrl_sep {
 				width: 5px; position: absolute; top: 0px; color: white; text-align: center;
@@ -102,7 +102,7 @@ canvas {
 
 /* Control box buttons */
 .container_ctrl_up, .container_ctrl_down {
-	position: absolute; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande;
+	position: absolute; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; cursor: pointer;
 }
 .container_ctrl_up {
 	 top: -20px;
@@ -130,7 +130,7 @@ canvas {
 	#location_current_container {
 	}
 		.location_current {
-			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
 		}
 			.location_current_label {
 				color: #999999;
@@ -140,22 +140,22 @@ canvas {
 			.location_current_country {
 			}
 	.location_current_change {
-		margin: 0px; padding: 5px 10px; border: 0px; background-color: transparent; color: white;
+		margin: 0px; padding: 5px 10px; border: 0px; background-color: transparent; color: white; cursor: pointer;
 	}
 
 	#location_change_container {
 		display: none;
 	}
 		.location_change_label {
-			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 9pt;
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 9pt;
 		}
 		.location_hr {
 			position: relative; margin: 15px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;
 		}
 
 		.location_option {
-			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
 		}
 		.location_option_hover {
-			padding: 5px 10px; background-color: #666666; color: white; font-family: Lucida Grande; font-size: 8pt; text-shadow: #333333 -0.5px -1px 0.75px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+			padding: 5px 10px; background-color: #666666; color: white; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt; text-shadow: #333333 -0.5px -1px 0.75px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
 		}

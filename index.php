@@ -5,7 +5,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title></title>
+		<title>Starmap</title>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
 		<script type="text/javascript" src="script.js"></script>
 
@@ -49,12 +49,12 @@
 			<div class="container_lon_container">
 				<span class="container_lon_minor_ctrls">&nbsp;
 					<span class="container_lon_ctrl_label">lon</span>
-					<input type="button" onmousedown="newadj(this, 'latadj', 1);" class="container_ctrl_up" value="+" />
-					<input type="button" onmousedown="newadj(this, 'latadj', -1);" class="container_ctrl_down" value="-" />
+					<input type="button" onmousedown="newadj(this, 'lonadj', 1);" class="container_ctrl_up" value="+" />
+					<input type="button" onmousedown="newadj(this, 'lonadj', -1);" class="container_ctrl_down" value="-" />
 				</span>
 				<span class="container_lon_major_ctrls">&nbsp;
-					<input type="button" onmousedown="newadj(this, 'latadj', 10);" class="container_ctrl_up" value="++" />
-					<input type="button" onmousedown="newadj(this, 'latadj', -10);" class="container_ctrl_down" value="--" />
+					<input type="button" onmousedown="newadj(this, 'lonadj', 10);" class="container_ctrl_up" value="++" />
+					<input type="button" onmousedown="newadj(this, 'lonadj', -10);" class="container_ctrl_down" value="--" />
 				</span>
 				<input id="locdis_lon" type="text" value="-149" class="container_lon_disp" />
 			</div>
