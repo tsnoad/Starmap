@@ -236,9 +236,9 @@ function location_change_init() {
 	location_change_list();
 
 	//show the new location input
-	$('location_change').style.display = "block";
+	$('location_change_container').style.display = "block";
 	//hide the current location
-	$('location_current').style.display = "none";
+	$('location_current_container').style.display = "none";
 
 	//focus the location input, so the user can start typing
 	$('location_input').focus();
@@ -264,13 +264,25 @@ function location_change_list() {
  */
 function location_change(location_name, location_country, location_lat, location_lon) {
 	//show the current location
-	$('location_current').style.display = "block";
+	$('location_current_container').style.display = "block";
 	//hide the new location input
-	$('location_change').style.display = "none";
+	$('location_change_container').style.display = "none";
+
+	//update the current location labels
+	$('location_current_city').innerHTML = location_name;
+	$('location_current_country').innerHTML = location_country;
+
+	//reset lat/lon adjustments
+	latadj = 0;
+	lonadj = 0;
 
 	//update the observer latitude and longitude
 	obslat = location_lat;
 	obslon = location_lon;
+
+	//update the latitude and longitude displays
+	$('locdis_lat').value = latadj + obslat;
+	$('locdis_lon').value = lonadj + obslon;
 
 	//redraw the starmap
 	draw();
@@ -338,7 +350,23 @@ function draw() {
 		var viewlat = obsdec_tmp;
 		var viewlat_rad = deg2rad(viewlat);
 
+/*
+		//bright sky during daytime
+		ctx.fillStyle = ("#c0ccff");
+		ctx.fillRect(0, 0, 3600, 1800);
+*/
 
+/*
+		//glow around edge of stardome
+		var sky_grad = ctx.createRadialGradient(1800, 900, 0, 1800, 900, sphererad);
+		sky_grad.addColorStop(0, "#000000");
+		sky_grad.addColorStop(0.75, "#000000");
+		sky_grad.addColorStop(1, "#010206");
+
+		ctx.fillStyle = sky_grad;
+		ctx.arc(1800, 900, sphererad, 0, 2 * Math.PI, false);
+		ctx.fill();
+*/
 
 		//Draw circle around hemisphere
 		ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
