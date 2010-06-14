@@ -1,0 +1,161 @@
+html {
+	margin: 0px;
+}
+body {
+	margin: 0px; overflow: hidden; background-color: black;
+}
+canvas {
+	position: absolute; left: 0px; top: 0px;
+}
+
+/* Control Boxes */
+.container {
+	position: absolute; padding: 2px;
+}
+.container_background {
+	position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;
+}
+.container_border {
+	position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;
+}
+
+/* Specific control box styles */
+.container_latlon {
+	width: 155px; height: 60px; left: 50px; bottom: 20px;
+}
+.container_date {
+	width: 235px; height: 60px; left: 225px; bottom: 20px;
+}
+.container_location {
+	width: 300px; left: 50px; top: 20px;
+}
+
+	/* Lat/Long specific control styles */
+	.container_lat_container, .container_lon_container {
+		width: 70px; height: 20px; position: absolute; top: 20px; padding: 1px 0px; background-color: #111111;
+	}
+	.container_lat_container {
+		left: 5px;
+	}
+	.container_lon_container {
+		left: 80px;
+	}
+		.container_lat_minor_ctrls, .container_lon_minor_ctrls, .container_lat_major_ctrls, .container_lon_major_ctrls {
+			position: relative; vertical-align: middle; font-family: Lucida Grande;
+		}
+		.container_lat_minor_ctrls, .container_lon_minor_ctrls {
+			font-size: 8pt;
+		}
+		.container_lat_major_ctrls, .container_lon_major_ctrls {
+			font-size: 6pt;
+		}
+			.container_lat_ctrl_label, .container_lon_ctrl_label {
+				width: 20px; position: absolute; left: 0px; top: 0px; color: #999999; text-align: center;
+			}
+		.container_lat_disp, .container_lon_disp {
+			width: 50px; height: 20px; position: absolute; left: 20px; top: 0px; border: 0px; background-color: transparent; color: white; text-align: center;
+		}
+	/* Date specific control styles */
+	.container_year_container, .container_month_container, .container_day_container, .container_hour_container, .container_minute_container, .container_second_container {
+		height: 20px; position: absolute; top: 20px; padding: 1px 0px; background-color: black;
+	}
+	.container_year_container {
+		width: 50px;  left: 5px;
+	}
+	.container_month_container {
+		width: 30px; left: 60px;
+	}
+	.container_day_container {
+		width: 30px; left: 95px;
+	}
+	.container_hour_container {
+		width: 30px; left: 130px;
+	}
+	.container_minute_container {
+		width: 30px; left: 165px;
+	}
+	.container_second_container {
+		width: 30px; left: 200px;
+	}
+		.container_year_ctrls, .container_month_ctrls, .container_day_ctrls, .container_hour_ctrls, .container_minute_ctrls {
+			position: relative; font-family: Lucida Grande; font-size: 8pt;
+		}
+			.container_year_ctrl_sep, .container_month_ctrl_sep, .container_hour_ctrl_sep, .container_minute_ctrl_sep {
+				width: 5px; position: absolute; top: 0px; color: white; text-align: center;
+			}
+			.container_year_ctrl_sep {
+				left: 50px;
+			}
+			.container_month_ctrl_sep, .container_hour_ctrl_sep, .container_minute_ctrl_sep {
+				left: 30px;
+			}
+		.container_year_disp, .container_month_disp, .container_day_disp, .container_hour_disp, .container_minute_disp, .container_second_disp {
+			height: 20px; position: absolute; left: 0px; top: 0px; border: 0px; background-color: #111111; color: white; text-align: center;
+		}
+		.container_year_disp {
+			width: 50px; 
+		}
+		.container_month_disp, .container_day_disp, .container_hour_disp, .container_minute_disp, .container_second_disp {
+			width: 30px;
+		}
+
+
+/* Control box buttons */
+.container_ctrl_up, .container_ctrl_down {
+	position: absolute; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande;
+}
+.container_ctrl_up {
+	 top: -20px;
+}
+.container_ctrl_down {
+	 top: 20px;
+}
+	.container_lat_minor_ctrls .container_ctrl_up, .container_lat_minor_ctrls .container_ctrl_down, .container_lon_minor_ctrls .container_ctrl_up, .container_lon_minor_ctrls .container_ctrl_down  {
+		width: 35px; left: 0px; font-size: 8pt; text-align: right;
+	}
+	.container_lat_major_ctrls .container_ctrl_up, .container_lat_major_ctrls .container_ctrl_down, .container_lon_major_ctrls .container_ctrl_up, .container_lon_major_ctrls .container_ctrl_down {
+		width: 35px; left: 35px; font-size: 6pt; text-align: left;
+	}
+	.container_year_ctrls .container_ctrl_up, .container_year_ctrls .container_ctrl_down {
+		width: 50px; left: 0px; font-size: 8pt; text-align: center;
+	}
+	.container_month_ctrls .container_ctrl_up, .container_month_ctrls .container_ctrl_down, .container_day_ctrls .container_ctrl_up, .container_day_ctrls .container_ctrl_down, .container_hour_ctrls .container_ctrl_up, .container_hour_ctrls .container_ctrl_down, .container_minute_ctrls .container_ctrl_up, .container_minute_ctrls .container_ctrl_down {
+		width: 30px; left: 0px; font-size: 8pt; text-align: center;
+	}
+
+/* Location control box */
+.location_padding {
+	position: relative; padding: 15px 10px;
+}
+	#location_current_container {
+	}
+		.location_current {
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;
+		}
+			.location_current_label {
+				color: #999999;
+			}
+			.location_current_city {
+			}
+			.location_current_country {
+			}
+	.location_current_change {
+		margin: 0px; padding: 5px 10px; border: 0px; background-color: transparent; color: white;
+	}
+
+	#location_change_container {
+		display: none;
+	}
+		.location_change_label {
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 9pt;
+		}
+		.location_hr {
+			position: relative; margin: 15px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;
+		}
+
+		.location_option {
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande; font-size: 8pt;
+		}
+		.location_option_hover {
+			padding: 5px 10px; background-color: #666666; color: white; font-family: Lucida Grande; font-size: 8pt; text-shadow: #333333 -0.5px -1px 0.75px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+		}
