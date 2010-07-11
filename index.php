@@ -139,6 +139,7 @@
 					</div>
 			
 					<div id="locations_list" style="padding: 10px 5px 0px 10px;">
+						type type type
 					</div>
 				</div>
 		

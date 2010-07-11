@@ -8,6 +8,43 @@ canvas {
 	position: absolute; left: 0px; top: 0px;
 }
 
+/* Location control box */
+.location_padding {
+	position: relative; padding: 15px 10px;
+}
+	#location_current_container {
+	}
+		.location_current {
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
+		}
+			.location_current_label {
+				color: #999999;
+			}
+			.location_current_city {
+			}
+			.location_current_country {
+			}
+	.location_current_change {
+		margin: 0px; padding: 5px 10px; border: 0px; background-color: transparent; color: white; cursor: pointer;
+	}
+
+	#location_change_container {
+		display: none;
+	}
+		.location_change_label {
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 9pt;
+		}
+		.location_hr {
+			position: relative; margin: 15px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;
+		}
+
+		.location_option {
+			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
+		}
+		.location_option_hover {
+			padding: 5px 10px; background-color: #666666; color: white; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt; text-shadow: #333333 -0.5px -1px 0.75px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+		}
+
 /* Style for the left control panel */
 .leftpanelouter {
 	width: 250px; height: 100%; position: absolute; left: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(right, #2e3436, #192424); background: -webkit-gradient(linear, right top, left top, from(#2e3436), to(#192424));
