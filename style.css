@@ -8,154 +8,161 @@ canvas {
 	position: absolute; left: 0px; top: 0px;
 }
 
-/* Control Boxes */
-.container {
-	position: absolute; padding: 2px;
+/* Style for the left control panel */
+.leftpanelouter {
+	width: 250px; height: 100%; position: absolute; left: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(right, #2e3436, #192424);
 }
-.container_background {
-	position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid black; background-color: black; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.75;
-}
-.container_border {
-	position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; border: 2px solid white; background-color: transparent; -moz-border-radius: 10px; -webkit-border-radius: 10px; opacity: 0.15;
-}
-
-/* Specific control box styles */
-.container_latlon {
-	width: 155px; height: 60px; left: 305px; bottom: 20px;
-}
-.container_date {
-	width: 235px; height: 60px; left: 50px; bottom: 20px;
-}
-.container_location {
-	width: 300px; left: 50px; top: 20px;
-}
-
-	/* Lat/Long specific control styles */
-	.container_lat_container, .container_lon_container {
-		width: 70px; height: 20px; position: absolute; top: 20px; padding: 1px 0px; background-color: #111111;
+	.leftpanelouter_expanded {
+		width: 250px;
 	}
-	.container_lat_container {
-		left: 5px;
+	.leftpanelouter_collapsed {
+		width: 42px;
 	}
-	.container_lon_container {
-		left: 80px;
+	.leftpanelinner {
+		width: 240px; height: 480px; position: absolute; left: 0px; top: 50%; margin-top: -240px; background-color: #111717; background: -moz-linear-gradient(top, #000909, #111717 50px);
 	}
-		.container_lat_minor_ctrls, .container_lon_minor_ctrls, .container_lat_major_ctrls, .container_lon_major_ctrls {
-			position: relative; vertical-align: baseline; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana;
+		.leftpanelinner_expanded {
+			width: 240px;
 		}
-		.container_lat_minor_ctrls, .container_lon_minor_ctrls {
-			font-size: 8pt;
+		.leftpanelinner_collapsed {
+			width: 40px;
 		}
-		.container_lat_major_ctrls, .container_lon_major_ctrls {
-			font-size: 6pt;
-		}
-			.container_lat_ctrl_label, .container_lon_ctrl_label {
-				width: 20px; position: absolute; left: 0px; top: 0px; color: #999999; text-align: center;
+			.leftpanelouter_expanded .leftpanelinner_collapsed {
+				display: none;
 			}
-		.container_lat_disp, .container_lon_disp {
-			width: 50px; height: 20px; position: absolute; left: 20px; top: 0px; border: 0px; background-color: transparent; color: white; text-align: center;
-		}
-	/* Date specific control styles */
-	.container_year_container, .container_month_container, .container_day_container, .container_hour_container, .container_minute_container, .container_second_container {
-		height: 20px; position: absolute; top: 20px; padding: 1px 0px; background-color: black;
-	}
-	.container_year_container {
-		width: 50px;  left: 5px;
-	}
-	.container_month_container {
-		width: 30px; left: 60px;
-	}
-	.container_day_container {
-		width: 30px; left: 95px;
-	}
-	.container_hour_container {
-		width: 30px; left: 130px;
-	}
-	.container_minute_container {
-		width: 30px; left: 165px;
-	}
-	.container_second_container {
-		width: 30px; left: 200px;
-	}
-		.container_year_ctrls, .container_month_ctrls, .container_day_ctrls, .container_hour_ctrls, .container_minute_ctrls {
-			position: relative; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
-		}
-			.container_year_ctrl_sep, .container_month_ctrl_sep, .container_hour_ctrl_sep, .container_minute_ctrl_sep {
-				width: 5px; position: absolute; top: 0px; color: white; text-align: center;
+			.leftpanelouter_collapsed .leftpanelinner_expanded {
+				display: none;
 			}
-			.container_year_ctrl_sep {
-				left: 50px;
-			}
-			.container_month_ctrl_sep, .container_hour_ctrl_sep, .container_minute_ctrl_sep {
-				left: 30px;
-			}
-		.container_year_disp, .container_month_disp, .container_day_disp, .container_hour_disp, .container_minute_disp, .container_second_disp {
-			height: 20px; position: absolute; left: 0px; top: 0px; border: 0px; background-color: #111111; color: white; text-align: center;
-		}
-		.container_year_disp {
-			width: 50px; 
-		}
-		.container_month_disp, .container_day_disp, .container_hour_disp, .container_minute_disp, .container_second_disp {
-			width: 30px;
-		}
 
-
-/* Control box buttons */
-.container_ctrl_up, .container_ctrl_down {
-	position: absolute; margin: 0px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; cursor: pointer;
+/* Style for the right control panel */
+.rightpanelouter {
+	width: 250px; height: 100%; position: absolute; right: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(left, #2e3436, #192424);
 }
-.container_ctrl_up {
-	 top: -20px;
-}
-.container_ctrl_down {
-	 top: 20px;
-}
-	.container_lat_minor_ctrls .container_ctrl_up, .container_lat_minor_ctrls .container_ctrl_down, .container_lon_minor_ctrls .container_ctrl_up, .container_lon_minor_ctrls .container_ctrl_down  {
-		width: 35px; left: 0px; font-size: 8pt; text-align: right;
+	.rightpanelouter_expanded {
+		width: 250px;
 	}
-	.container_lat_major_ctrls .container_ctrl_up, .container_lat_major_ctrls .container_ctrl_down, .container_lon_major_ctrls .container_ctrl_up, .container_lon_major_ctrls .container_ctrl_down {
-		width: 35px; left: 35px; font-size: 6pt; text-align: left;
+	.rightpanelouter_collapsed {
+		width: 42px;
 	}
-	.container_year_ctrls .container_ctrl_up, .container_year_ctrls .container_ctrl_down {
-		width: 50px; left: 0px; font-size: 8pt; text-align: center;
+	.rightpanelinner {
+		width: 240px; height: 480px; position: absolute; right: 0px; top: 50%; margin-top: -240px; background-color: #111717; background: -moz-linear-gradient(top, #000909, #111717 50px);
 	}
-	.container_month_ctrls .container_ctrl_up, .container_month_ctrls .container_ctrl_down, .container_day_ctrls .container_ctrl_up, .container_day_ctrls .container_ctrl_down, .container_hour_ctrls .container_ctrl_up, .container_hour_ctrls .container_ctrl_down, .container_minute_ctrls .container_ctrl_up, .container_minute_ctrls .container_ctrl_down {
-		width: 30px; left: 0px; font-size: 8pt; text-align: center;
-	}
-
-/* Location control box */
-.location_padding {
-	position: relative; padding: 15px 10px;
-}
-	#location_current_container {
-	}
-		.location_current {
-			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
+		.rightpanelinner_expanded {
+			width: 240px;
 		}
-			.location_current_label {
-				color: #999999;
+		.rightpanelinner_collapsed {
+			width: 40px;
+		}
+			.rightpanelouter_expanded .rightpanelinner_collapsed {
+				display: none;
 			}
-			.location_current_city {
+			.rightpanelouter_collapsed .rightpanelinner_expanded {
+				display: none;
 			}
-			.location_current_country {
+
+/* Style for all the control panel buttons */
+.panelbutton {
+	width: 32px; height: 32px; position: relative; float: left; margin-left: 8px; background-color: #cccccc; background: -moz-linear-gradient(top, #cccccc, #888888); -moz-border-radius: 5px; border-bottom: 2px solid black;
+}
+	.panelbutton_first {
+		margin-left: 0px;
+	}
+	.panelbutton_double {
+		background-color: #666666; background: -moz-linear-gradient(top, #666666, #444444);
+	}
+	.panelbutton_pnlrtminms {
+		float: right;
+	}
+	.panelbutton_input {
+		width: 32px; height: 32px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; background-image: url('button_fg.png'); background-repeat: no-repeat; color: black; font-family: Lucida Grande; font-size: 9pt; font-weight: bold; text-shadow: 0px 1px 0px #cccccc;
+	}
+		.panelbutton_double .panelbutton_input {
+			text-shadow: 0px 1px 0px #666666;
+		}
+		.panelbutton_down .panelbutton_input {
+			background-position: -32px 0px;
+		}
+			.panelbutton_downdouble .panelbutton_input {
+				background-position: 0px 0px;
 			}
-	.location_current_change {
-		margin: 0px; padding: 5px 10px; border: 0px; background-color: transparent; color: white; cursor: pointer;
+		.panelbutton_up .panelbutton_input {
+			background-position: -64px 0px;
+		}
+			.panelbutton_updouble .panelbutton_input {
+				background-position: -96px 0px;
+			}
+		.panelbutton_left .panelbutton_input {
+			background-position: -160px 0px;
+		}
+			.panelbutton_leftdouble .panelbutton_input {
+				background-position: -128px 0px;
+			}
+		.panelbutton_right .panelbutton_input {
+			background-position: -192px 0px;
+		}
+			.panelbutton_rightdouble .panelbutton_input {
+				background-position: -224px 0px;
+			}
+		.panelbutton_zmout .panelbutton_input {
+			background-position: -288px 0px;
+		}
+			.panelbutton_zmoutdouble .panelbutton_input {
+				background-position: -256px 0px;
+			}
+		.panelbutton_zmin .panelbutton_input {
+			background-position: -320px 0px;
+		}
+			.panelbutton_zmindouble .panelbutton_input {
+				background-position: -352px 0px;
+			}
+		.panelbutton_pnllftminms .panelbutton_input {
+			background-position: -416px 0px;
+		}
+		.panelbutton_pnllftmaxms .panelbutton_input {
+			background-position: -384px 0px;
+		}
+		.panelbutton_pnlrtminms .panelbutton_input {
+			background-position: -448px 0px;
+		}
+		.panelbutton_pnlrtmaxms .panelbutton_input {
+			background-position: -384px 0px;
+		}
+	.panelbutton_pointer {
+		width: 0px; height: 0px; position: absolute; background-color: transparent; border: 6px solid transparent;
 	}
-
-	#location_change_container {
-		display: none;
-	}
-		.location_change_label {
-			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 9pt;
+		.panelbutton_down .panelbutton_pointer {
+			left: 10px; top: 32px; border-top: 6px solid #888888;
 		}
-		.location_hr {
-			position: relative; margin: 15px 10px; border: 0px; border-top: 2px solid white; opacity: 0.15;
+			.panelbutton_downdouble .panelbutton_pointer {
+				border-top: 6px solid #444444;
+			}
+		.panelbutton_up .panelbutton_pointer {
+			left: 10px; bottom: 32px; border-bottom: 6px solid #cccccc;
 		}
-
-		.location_option {
-			padding: 5px 10px; color: #cccccc; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt;
+			.panelbutton_updouble .panelbutton_pointer {
+				border-bottom: 6px solid #666666;
+			}
+		.panelbutton_left .panelbutton_pointer {
+			right: 32px; top: 10px; border-right: 6px solid #aaaaaa;
 		}
-		.location_option_hover {
-			padding: 5px 10px; background-color: #666666; color: white; font-family: Lucida Grande, Lucida Sans, Lucida, Verdana; font-size: 8pt; text-shadow: #333333 -0.5px -1px 0.75px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+			.panelbutton_leftdouble .panelbutton_pointer {
+				border-right: 6px solid #555555;
+			}
+		.panelbutton_right .panelbutton_pointer {
+			left: 32px; top: 10px; border-left: 6px solid #aaaaaa;
 		}
+			.panelbutton_rightdouble .panelbutton_pointer {
+				border-left: 6px solid #555555;
+			}
+		.panelbutton_zmout .panelbutton_pointer {
+			left: 10px; top: 32px; border-top: 6px solid #888888;
+		}
+			.panelbutton_zmoutdouble .panelbutton_pointer {
+				border-top: 6px solid #444444;
+			}
+		.panelbutton_zmin .panelbutton_pointer {
+			left: 10px; bottom: 32px; border-bottom: 6px solid #cccccc;
+		}
+			.panelbutton_zmindouble .panelbutton_pointer {
+				border-bottom: 6px solid #666666;
+			}
