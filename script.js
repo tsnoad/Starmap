@@ -33,6 +33,27 @@ function deg2rad(deg) {
 	return (deg * Math.PI) / 180;
 }
 
+function get_cookie(name) {
+/* console.log(name); */
+
+	if (document.cookie.length > 1) {
+/* console.log(document.cookie); */
+
+		c_start = document.cookie.indexOf(name+"=");
+		
+		if (c_start != -1) {
+			c_start += name.length + 1;
+			c_end = document.cookie.indexOf(";", c_start);
+			
+			if (c_end == -1) c_end = document.cookie.length;
+			
+/* console.log(document.cookie.substring(c_start, c_end)); */
+return unescape(document.cookie.substring(c_start, c_end));
+		}
+	}
+}
+
+
 /*
  * Start putting the page together
  */
@@ -45,6 +66,32 @@ function init() {
 
 	//start keeping track of sidereal time
 	rottime_repeat();
+
+	//initial size of the skydome should match the size of the browser
+	zmadj = (Math.min(self.innerWidth, self.innerHeight) / 2) * 1.1;
+
+	var location_name = get_cookie("location_name");
+	var location_country = get_cookie("location_country");
+	var location_lat = get_cookie("location_lat");
+	var location_lon = get_cookie("location_lon");
+
+	if (location_name) {
+		//update the current location labels
+		$('location_current_city').innerHTML = location_name;
+		$('location_current_country').innerHTML = location_country;
+	
+		//reset lat/lon adjustments
+		latadj = 0;
+		lonadj = 0;
+	
+		//update the observer latitude and longitude
+		obslat = parseFloat(location_lat);
+		obslon = parseFloat(location_lon);
+	}
+
+	//update the latitude and longitude displays
+	$('locdis_lat').value = latadj + obslat;
+	$('locdis_lon').value = lonadj + obslon;
 
 	//draw the starmap
 	draw();
@@ -103,10 +150,21 @@ function rottime_repeat() {
  * This is used on load and on resize
  */
 function repos_canvas() {
+
+	var paneloffset = 0;
+
+	if ($('leftpanel').className == 'leftpanelouter leftpanelouter_collapsed') {
+		paneloffset -= (250 - 42) / 2;
+	}
+
+	if ($('rightpanel').className == 'rightpanelouter rightpanelouter_collapsed') {
+		paneloffset += (250 - 42) / 2;
+	}
+
 	//find the canvas element
 	var canvas = document.getElementById('tutorial');
 	//center horizontally
-	canvas.style.left = ((self.innerWidth - 3600) / 2) + "px";
+	canvas.style.left = (((self.innerWidth - 3600) / 2) + paneloffset) + "px";
 	//center vertically
 	canvas.style.top = (((self.innerHeight - 1800) / 2) + 0) + "px";
 }
@@ -171,8 +229,8 @@ function newadj_actuate(adj_timeout_obj) {
 	window[adj_timeout_obj.adjustme] += adj_timeout_obj.adjustamount;
 
 	//update the latitude and longitude displays
-	$('locdis_lat').value = latadj + obslat;
-	$('locdis_lon').value = lonadj + obslon;
+	$('locdis_lat').innerHTML = (latadj + obslat).toString() + "\u00B0";
+	$('locdis_lon').innerHTML = (lonadj + obslon).toString() + "\u00B0";
 
 	//recalculate sidereal time
 	rottime();
@@ -286,6 +344,12 @@ function location_change(location_name, location_country, location_lat, location
 
 	//redraw the starmap
 	draw();
+
+	//store the location in a cookie
+	document.cookie = "location_name="+escape(location_name);
+	document.cookie = "location_country="+escape(location_country);
+	document.cookie = "location_lat="+escape(location_lat);
+	document.cookie = "location_lon="+escape(location_lon);
 }
 
 /*
@@ -373,6 +437,7 @@ function draw() {
 		ctx.lineWidth = 2;
 		ctx.beginPath();
 		
+		//we'll draw the circle by drawing a line with 360 points
 		for (var i = 0; i <= 360; i += 1) {
 			var moo = ((i * Math.PI) / 180);
 		
@@ -422,6 +487,12 @@ function draw() {
 				
 						var i_rad = deg2rad(i);
 						var j_rad = deg2rad(j);
+
+
+						var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(viewlat_rad)) * 2 * 90) / Math.PI;
+						if (vislim > j) {
+							continue;
+						}
 				
 						var width = sphererad * Math.cos(j_rad);
 				
@@ -434,19 +505,12 @@ function draw() {
 						var xpos = 1800 + (width * Math.cos(i_rad));
 /* 						var ypos = 900 - altpersp + (height * Math.cos(i_rad) * Math.sin(deg2rad(0))) + (height * Math.sin(i_rad) * Math.cos(deg2rad(0))); */
 						var ypos = 900 - altpersp + (height * Math.sin(i_rad));
-				
-				
-						var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(viewlat_rad)) * 2 * 90) / Math.PI;
-				
-						if (vislim > j) {
-							continue;
-						}
 
 /*
 						//scale stars with zoom					
 						stars[starid]['r'] = stars[starid]['r'] * (zmadj / 450);
 */
-							
+						
 /*
 						//use shadow to show a glow around stars
 						ctx.shadowColor   = 'rgba(255, 255, 255, 1)';
@@ -464,7 +528,7 @@ function draw() {
 
 /*
 						//reset the shadow, so nothing else shows up with a glow
-						ctx.shadowColor   = '';
+						ctx.shadowColor   = 'rgba(255, 255, 255, 0)';
 						ctx.shadowBlur    = 0;
 */
 
@@ -473,6 +537,25 @@ function draw() {
 						if (stars[starid]['n']) {
 							planets[stars[starid]['n']]['x'] = xpos;
 							planets[stars[starid]['n']]['y'] = ypos;
+
+							if (stars[starid]['n'] == "sun") {
+/*
+								var bg_grad = ctx.createRadialGradient(1800, 900, 0, 1800, 900, sphererad*1.5);
+								bg_grad.addColorStop(0.66, "#888a85");
+								bg_grad.addColorStop(1, "black");
+
+								ctx.fillStyle = bg_grad;
+								ctx.fillRect(0, 0, 3600, 1800);
+
+								var sky_grad = ctx.createRadialGradient(1800, 900, 0, 1800, 900, sphererad);
+								sky_grad.addColorStop(0.75, "#87cefa");
+								sky_grad.addColorStop(1, "#00bfff");
+						
+								ctx.fillStyle = sky_grad;
+								ctx.arc(1800, 900, sphererad, 0, 2 * Math.PI, false);
+								ctx.fill();
+*/
+							}
 						}
 
 						if (stars[starid]['mw']) {
@@ -485,41 +568,120 @@ function draw() {
 							milkyway[milkyway_index]['y'] = ypos;
 						}
 					}
-					
-					
 
 					
-					//Draw latitude lines
-					for (var j = -90; j < 90; j += 15) {
-						ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+					if ($('option_show_ecliptic').checked) {
+						//Draw the ecliptic line
+						ctx.strokeStyle = "rgba(63, 127, 255, 0.25)";
 						ctx.lineWidth = 2;
 						ctx.beginPath();
 					
 						for (var i = 0; i <= 360; i += 1) {
-							var moo = ((i * Math.PI) / 180);
+	
+	var j = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(deg2rad(-90 + 22.5))) * 2 * 90) / Math.PI;
+		
+	
 					
-							var width = sphererad * Math.cos(deg2rad(j));
+							var i_tmp = i + obsra_tmp;
 					
-							var height = width * Math.sin(deg2rad(viewlat));
+							var i_rad = deg2rad(i_tmp);
+							var j_rad = deg2rad(j);
 					
-							var alt = sphererad * Math.sin(deg2rad(j));
-							var altpersp = alt * Math.cos(deg2rad(viewlat));
+							var width = sphererad * Math.cos(j_rad);
 					
-/* 							var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0))); */
-							var xpos = 1800 + (width * Math.cos(moo));
-/* 							var ypos = 900 - altpersp + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))); */
-							var ypos = 900 - altpersp + (height * Math.sin(moo));
+							var height = width * Math.sin(viewlat_rad);
 					
+							var alt = sphererad * Math.sin(j_rad);
+							var altpersp = alt * Math.cos(viewlat_rad);
 					
-							var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
+	/* 						var xpos = 1800 + (width * Math.cos(i_rad) * Math.cos(deg2rad(0))) - (width * Math.sin(i_rad) * Math.sin(deg2rad(0))); */
+							var xpos = 1800 + (width * Math.cos(i_rad));
+	/* 						var ypos = 900 - altpersp + (height * Math.cos(i_rad) * Math.sin(deg2rad(0))) + (height * Math.sin(i_rad) * Math.cos(deg2rad(0))); */
+							var ypos = 900 - altpersp + (height * Math.sin(i_rad));
+	
+						
+							var vislim = (Math.atan(Math.sin(((i_tmp - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
 					
-							if (vislim > j || i == 0) {
+							if (vislim > j || i_tmp == 0) {
 								ctx.moveTo(xpos, ypos);
 							} else {
 								ctx.lineTo(xpos, ypos);
 							}
 						}
 						ctx.stroke();
+					}
+
+					
+					if ($('option_show_grid').checked) {
+						//Draw latitude lines
+						for (var j = -90; j < 90; j += 15) {
+							ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+							ctx.lineWidth = 2;
+							ctx.beginPath();
+						
+							for (var i = 0; i <= 360; i += 1) {
+								var moo = ((i * Math.PI) / 180);
+						
+								var width = sphererad * Math.cos(deg2rad(j));
+						
+								var height = width * Math.sin(deg2rad(viewlat));
+						
+								var alt = sphererad * Math.sin(deg2rad(j));
+								var altpersp = alt * Math.cos(deg2rad(viewlat));
+						
+	/* 							var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0))); */
+								var xpos = 1800 + (width * Math.cos(moo));
+	/* 							var ypos = 900 - altpersp + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))); */
+								var ypos = 900 - altpersp + (height * Math.sin(moo));
+						
+						
+								var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
+						
+								if (vislim > j || i == 0) {
+									ctx.moveTo(xpos, ypos);
+								} else {
+									ctx.lineTo(xpos, ypos);
+								}
+							}
+							ctx.stroke();
+						}
+	
+						//draw longitude lines
+	/*
+						for (var j = 0; j < 180; j += 15) {
+							ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+							ctx.lineWidth = 2;
+							ctx.beginPath();
+					
+							var rot = j + .01;
+							rot += obsra_tmp;
+					
+							for (var i = 0; i <= 360; i += 1) {
+								var moo = (i * Math.PI / 180);
+					
+								var height = sphererad * Math.cos(deg2rad(viewlat));
+								var width = sphererad * Math.cos(deg2rad(rot));
+					
+								var boxtopperspheight = sphererad * Math.sin(deg2rad(viewlat));
+								var nonperspheight = sphererad * Math.sin(deg2rad(rot)) * 2;
+								var perspheight = (nonperspheight / (sphererad * 2)) * boxtopperspheight;
+								var perspang = perspheight / (width);
+					
+								var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0)));
+								var ypos = 900 + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))) + ((xpos - 1800) * perspang);
+					
+					
+								var vislim = -1 * (Math.atan(Math.sin(((rot - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
+					
+								if (i - 180 < vislim && i > vislim) {
+									ctx.moveTo(xpos, ypos);
+								} else {
+									ctx.lineTo(xpos, ypos);
+								}
+							}
+							ctx.stroke();
+						}
+	*/
 					}
 
 
@@ -553,7 +715,7 @@ ctx.shadowOffsetY = 18;
 ctx.shadowBlur = 50;
 */
 
-if (planets) {
+if (planets && $('option_show_labels').checked) {
 	if (flipped) {
 		//then UNflip the screen
 		ctx.translate(1800, 900);

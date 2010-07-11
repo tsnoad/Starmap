@@ -43,19 +43,19 @@
 	//make sure some name was entered
 	if (empty($user_location)) {
 		//if not, show an error message
-		echo "<div class=\"location_option\">please enter the name of a location or city</div>";
+		echo "<div style=\"padding: 0px; color: white; font-family: Lucida Grande; font-size: 8pt; text-shadow: 2px 2px 0px black;\">please enter the name of a location or city</div>";
 		//do no more. the echod html will be passed back to javascript via ajax
 		die();
 	}
 
 	//get all locations that match the entered text
 	//sanitisation required
-	$locations = runQuery("SELECT name, country, lat, lon FROM locations WHERE name ILIKE '{$user_location}%' ORDER BY population DESC LIMIT 20;");
+	$locations = runQuery("SELECT name, country, lat, lon FROM locations WHERE name ILIKE '{$user_location}%' ORDER BY population DESC LIMIT 10;");
 	
 	//if no locations found
 	if (empty($locations)) {
 		//show an error message
-		echo "<div class=\"location_option\">no locations found</div>";
+		echo "<div style=\"padding: 0px; color: white; font-family: Lucida Grande; font-size: 8pt; text-shadow: 2px 2px 0px black;\">no locations found</div>";
 		//do no more. the echod html will be passed back to javascript via ajax
 		die();
 	}
@@ -63,7 +63,7 @@
 	//for all the locations that match the entered text
 	foreach ($locations as $location) {
 		//echo out the location, with a hover effect, and that can be clicked on to set the location
-		echo "<div class=\"location_option\" onmouseover=\"this.className='location_option_hover';\" onmouseout=\"this.className='location_option';\" onclick=\"location_change('{$location['name']}', '{$location['country']}', ".round($location['lat'], 4).", ".round($location['lon'], 4).");\"><span>{$location['name']}</span><span style=\"\">, {$location['country']}</span></div>";
+		echo "<div style=\"padding: 5px 0px 0px 0px; color: #999999; font-family: Lucida Grande; font-size: 8pt; cursor: pointer;\" onmouseover=\"\" onmouseout=\"\" onclick=\"location_change('{$location['name']}', '{$location['country']}', ".round($location['lat'], 2).", ".round($location['lon'], 2).");\"><span>{$location['name']}</span><span style=\"\">, {$location['country']}</span></div>";
 	}
 
 ?>
