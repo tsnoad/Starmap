@@ -10,7 +10,7 @@ canvas {
 
 /* Style for the left control panel */
 .leftpanelouter {
-	width: 250px; height: 100%; position: absolute; left: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(right, #2e3436, #192424);
+	width: 250px; height: 100%; position: absolute; left: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(right, #2e3436, #192424); background: -webkit-gradient(linear, right top, left top, from(#2e3436), to(#192424));
 }
 	.leftpanelouter_expanded {
 		width: 250px;
@@ -19,7 +19,7 @@ canvas {
 		width: 42px;
 	}
 	.leftpanelinner {
-		width: 240px; height: 480px; position: absolute; left: 0px; top: 50%; margin-top: -240px; background-color: #111717; background: -moz-linear-gradient(top, #000909, #111717 50px);
+		width: 240px; height: 480px; position: absolute; left: 0px; top: 50%; margin-top: -240px; background-color: #111717; background: -moz-linear-gradient(top, #000909, #111717 50px); background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #000909), color-stop(.10, #111717));
 	}
 		.leftpanelinner_expanded {
 			width: 240px;
@@ -36,7 +36,7 @@ canvas {
 
 /* Style for the right control panel */
 .rightpanelouter {
-	width: 250px; height: 100%; position: absolute; right: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(left, #2e3436, #192424);
+	width: 250px; height: 100%; position: absolute; right: 0px; top: 0px; background-color: #2e3436; background: -moz-linear-gradient(left, #2e3436, #192424); background: -webkit-gradient(linear, left top, right top, from(#2e3436), to(#192424));
 }
 	.rightpanelouter_expanded {
 		width: 250px;
@@ -45,7 +45,7 @@ canvas {
 		width: 42px;
 	}
 	.rightpanelinner {
-		width: 240px; height: 480px; position: absolute; right: 0px; top: 50%; margin-top: -240px; background-color: #111717; background: -moz-linear-gradient(top, #000909, #111717 50px);
+		width: 240px; height: 480px; position: absolute; right: 0px; top: 50%; margin-top: -240px; background-color: #111717; background: -moz-linear-gradient(top, #000909, #111717 50px); background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #000909), color-stop(.10, #111717));
 	}
 		.rightpanelinner_expanded {
 			width: 240px;
@@ -62,19 +62,19 @@ canvas {
 
 /* Style for all the control panel buttons */
 .panelbutton {
-	width: 32px; height: 32px; position: relative; float: left; margin-left: 8px; background-color: #cccccc; background: -moz-linear-gradient(top, #cccccc, #888888); -moz-border-radius: 5px; border-bottom: 2px solid black;
+	width: 32px; height: 32px; position: relative; float: left; margin-left: 8px; background-color: #cccccc; background: -moz-linear-gradient(top, #cccccc, #888888); background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#888888)); -moz-border-radius: 5px; -webkit-border-radius: 5px; /* border-bottom: 2px solid black; */
 }
 	.panelbutton_first {
 		margin-left: 0px;
 	}
 	.panelbutton_double {
-		background-color: #666666; background: -moz-linear-gradient(top, #666666, #444444);
+		background-color: #666666; background: -moz-linear-gradient(top, #666666, #444444); background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#444444));
 	}
 	.panelbutton_pnlrtminms {
 		float: right;
 	}
 	.panelbutton_input {
-		width: 32px; height: 32px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; background-image: url('button_fg.png'); background-repeat: no-repeat; color: black; font-family: Lucida Grande; font-size: 9pt; font-weight: bold; text-shadow: 0px 1px 0px #cccccc;
+		display: block; width: 32px; height: 32px; margin: 0px; padding: 0px; border: 0px; background-color: transparent; background-image: url('button_fg.png'); background-repeat: no-repeat; color: black; font-family: Lucida Grande; font-size: 9pt; font-weight: bold; text-shadow: 0px 1px 0px #cccccc;
 	}
 		.panelbutton_double .panelbutton_input {
 			text-shadow: 0px 1px 0px #666666;
