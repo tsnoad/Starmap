@@ -439,18 +439,20 @@ function draw() {
 		
 		//we'll draw the circle by drawing a line with 360 points
 		for (var i = 0; i <= 360; i += 1) {
-			var moo = ((i * Math.PI) / 180);
+			var i_rad = deg2rad(i);
 		
 			var height = sphererad;
 			var width = sphererad;
 		
-/* 			var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0))); */
-			var xpos = 1800 + (width * Math.cos(moo));
-/* 			var ypos = 900 + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))); */
-			var ypos = 900 + (height * Math.sin(moo));
+			//work out the x/y coordinates of this point
+			var xpos = 1800 + (width * Math.cos(i_rad));
+			var ypos = 900 + (height * Math.sin(i_rad));
 
+			//move to the first point
 			if (i == 0) {
 				ctx.moveTo(xpos, ypos);
+
+			//then start drawing
 			} else {
 				ctx.lineTo(xpos, ypos);
 			}
@@ -472,8 +474,7 @@ function draw() {
 	
 			//reverse right ascenction
 /* 			i = 360 - i; */
-				i += 180;
-	
+			i += 180;
 	
 			//Whenever we cross the equator and have to rotate the entire screen
 			//we need add 180 to the longitude offset, so the stars arn't upside down
@@ -482,134 +483,131 @@ function draw() {
 			} else {
 				i += 180;
 			}
-				
-						i += obsra_tmp;
-				
-						var i_rad = deg2rad(i);
-						var j_rad = deg2rad(j);
-
-
-						var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(viewlat_rad)) * 2 * 90) / Math.PI;
-						if (vislim > j) {
-							continue;
-						}
-				
-						var width = sphererad * Math.cos(j_rad);
-				
-						var height = width * Math.sin(viewlat_rad);
-				
-						var alt = sphererad * Math.sin(j_rad);
-						var altpersp = alt * Math.cos(viewlat_rad);
-				
-/* 						var xpos = 1800 + (width * Math.cos(i_rad) * Math.cos(deg2rad(0))) - (width * Math.sin(i_rad) * Math.sin(deg2rad(0))); */
-						var xpos = 1800 + (width * Math.cos(i_rad));
-/* 						var ypos = 900 - altpersp + (height * Math.cos(i_rad) * Math.sin(deg2rad(0))) + (height * Math.sin(i_rad) * Math.cos(deg2rad(0))); */
-						var ypos = 900 - altpersp + (height * Math.sin(i_rad));
-
-/*
-						//scale stars with zoom					
-						stars[starid]['r'] = stars[starid]['r'] * (zmadj / 450);
-*/
-						
-/*
-						//use shadow to show a glow around stars
-						ctx.shadowColor   = 'rgba(255, 255, 255, 1)';
-						ctx.shadowOffsetX = 0;
-						ctx.shadowOffsetY = 0;
-						ctx.shadowBlur    = 5;
-*/
-					
-						//draw the star
-						ctx.fillStyle = stars[starid]['c'];
-						ctx.beginPath();
-						ctx.arc(xpos, ypos, stars[starid]['r'], 0, Math.PI * 2, true);
-						ctx.closePath();
-						ctx.fill();
-
-/*
-						//reset the shadow, so nothing else shows up with a glow
-						ctx.shadowColor   = 'rgba(255, 255, 255, 0)';
-						ctx.shadowBlur    = 0;
-*/
-
-						//if the star is named, then pass it's location to the planets array
-						//so that we know where to put it's label
-						if (stars[starid]['n']) {
-							planets[stars[starid]['n']]['x'] = xpos;
-							planets[stars[starid]['n']]['y'] = ypos;
-
-							if (stars[starid]['n'] == "sun") {
-/*
-								var bg_grad = ctx.createRadialGradient(1800, 900, 0, 1800, 900, sphererad*1.5);
-								bg_grad.addColorStop(0.66, "#888a85");
-								bg_grad.addColorStop(1, "black");
-
-								ctx.fillStyle = bg_grad;
-								ctx.fillRect(0, 0, 3600, 1800);
-
-								var sky_grad = ctx.createRadialGradient(1800, 900, 0, 1800, 900, sphererad);
-								sky_grad.addColorStop(0.75, "#87cefa");
-								sky_grad.addColorStop(1, "#00bfff");
-						
-								ctx.fillStyle = sky_grad;
-								ctx.arc(1800, 900, sphererad, 0, 2 * Math.PI, false);
-								ctx.fill();
-*/
-							}
-						}
-
-						if (stars[starid]['mw']) {
-							var milkyway_index = milkyway.length;
-
-							milkyway[milkyway_index] = new Array();
-
-							milkyway[milkyway_index]['action'] = stars[starid]['mw'];
-							milkyway[milkyway_index]['x'] = xpos;
-							milkyway[milkyway_index]['y'] = ypos;
-						}
-					}
-
-					
-					if ($('option_show_ecliptic').checked) {
-						//Draw the ecliptic line
-						ctx.strokeStyle = "rgba(63, 127, 255, 0.25)";
-						ctx.lineWidth = 2;
-						ctx.beginPath();
-					
-						for (var i = 0; i <= 360; i += 1) {
+			
+			//add the viewing longitude to the star's right ascencion
+			i += obsra_tmp;
 	
-	var j = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(deg2rad(-90 + 22.5))) * 2 * 90) / Math.PI;
+			//convert ra and dec from degrees to radians
+			var i_rad = deg2rad(i);
+			var j_rad = deg2rad(j);
+
+			//for this viewing lat/lon, calculate the declination the star would have have to be on the visible half of the skydome 
+			var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(viewlat_rad)) * 180) / Math.PI;
+			//if this star isn't on the visible half of the skydomw, skip it
+			if (vislim > j) {
+				continue;
+			}
+				
+			//needs documentation
+			var width = sphererad * Math.cos(j_rad);
+			var height = width * Math.sin(viewlat_rad);
+	
+			//needs documentation
+			var alt = sphererad * Math.sin(j_rad);
+			var altpersp = alt * Math.cos(viewlat_rad);
+	
+			//needs documentation
+			var xpos = 1800 + (width * Math.cos(i_rad));
+			var ypos = 900 - altpersp + (height * Math.sin(i_rad));
+
+/*
+			//scale stars with zoom					
+			stars[starid]['r'] = stars[starid]['r'] * (zmadj / 450);
+*/
+						
+/*
+			//use shadow to show a glow around stars
+			ctx.shadowColor   = 'rgba(255, 255, 255, 1)';
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
+			ctx.shadowBlur    = 5;
+*/
+					
+			//draw the star
+			ctx.fillStyle = stars[starid]['c'];
+			ctx.beginPath();
+			ctx.arc(xpos, ypos, stars[starid]['r'], 0, Math.PI * 2, true);
+			ctx.closePath();
+			ctx.fill();
+
+/*
+			//reset the shadow, so nothing else shows up with a glow
+			ctx.shadowColor   = 'rgba(255, 255, 255, 0)';
+			ctx.shadowBlur    = 0;
+*/
+
+			//if the star is named, then pass it's location to the planets array
+			//so that we know where to put it's label
+			if (stars[starid]['n']) {
+				planets[stars[starid]['n']]['x'] = xpos;
+				planets[stars[starid]['n']]['y'] = ypos;
+			}
+
+			//if the star is actually a point in the milky way outline
+			if (stars[starid]['mw']) {
+				//we need to put this points coordinates into an array, so we can draw it later
+
+				//what's the next available key in the milkyway array
+				var milkyway_index = milkyway.length;
+
+				//create a new subarray where we can store all the details
+				milkyway[milkyway_index] = new Array();
+
+				//store everything we'll need
+				milkyway[milkyway_index]['action'] = stars[starid]['mw'];
+				milkyway[milkyway_index]['x'] = xpos;
+				milkyway[milkyway_index]['y'] = ypos;
+			}
+		}
+
+		//if we're supposed to be drawing an ecliptic line
+		if ($('option_show_ecliptic').checked) {
+			//Draw the ecliptic line
+			ctx.strokeStyle = "rgba(63, 127, 255, 0.25)";
+			ctx.lineWidth = 2;
+			ctx.beginPath();
 		
-	
-					
-							var i_tmp = i + obsra_tmp;
-					
-							var i_rad = deg2rad(i_tmp);
-							var j_rad = deg2rad(j);
-					
-							var width = sphererad * Math.cos(j_rad);
-					
-							var height = width * Math.sin(viewlat_rad);
-					
-							var alt = sphererad * Math.sin(j_rad);
-							var altpersp = alt * Math.cos(viewlat_rad);
-					
-	/* 						var xpos = 1800 + (width * Math.cos(i_rad) * Math.cos(deg2rad(0))) - (width * Math.sin(i_rad) * Math.sin(deg2rad(0))); */
-							var xpos = 1800 + (width * Math.cos(i_rad));
-	/* 						var ypos = 900 - altpersp + (height * Math.cos(i_rad) * Math.sin(deg2rad(0))) + (height * Math.sin(i_rad) * Math.cos(deg2rad(0))); */
-							var ypos = 900 - altpersp + (height * Math.sin(i_rad));
-	
-						
-							var vislim = (Math.atan(Math.sin(((i_tmp - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
-					
-							if (vislim > j || i_tmp == 0) {
-								ctx.moveTo(xpos, ypos);
-							} else {
-								ctx.lineTo(xpos, ypos);
-							}
-						}
-						ctx.stroke();
-					}
+			//we'll draw the ecliptic by drawing a line with 360 points around it's circumference
+			for (var i = 0; i <= 360; i += 1) {
+				//the latitude of this point
+				//if the ecliptic went around the equator the latitude of this point would always be zero
+				//but since the ecliptic is tilted at 22.5 degrees we need to know how high this point is at this longitude
+				//this equation is very similar to the one we use to get vislim, I recommend punching it into a graphing calculator and playing around with the variables
+				var j = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan(deg2rad(-90 + 22.5))) * 2 * 90) / Math.PI;
+
+				//add the viewing longitude to the point's longitude
+				var i_tmp = i + obsra_tmp;
+		
+				//convert point's lat and lon from degrees to radians
+				var i_rad = deg2rad(i_tmp);
+				var j_rad = deg2rad(j);
+		
+				//needs documentation
+				var width = sphererad * Math.cos(j_rad);
+				var height = width * Math.sin(viewlat_rad);
+		
+				//needs documentation
+				var alt = sphererad * Math.sin(j_rad);
+				var altpersp = alt * Math.cos(viewlat_rad);
+		
+				//needs documentation
+				var xpos = 1800 + (width * Math.cos(i_rad));
+				var ypos = 900 - altpersp + (height * Math.sin(i_rad));
+
+				//for this viewing lat/lon, calculate the longitude the point would have have to be on the visible half of the skydome 
+				var vislim = (Math.atan(Math.sin(((i_tmp - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
+		
+				//if this point isn't on the visible half of the skydome, don't draw it
+				if (vislim > j || i_tmp == 0) {
+					ctx.moveTo(xpos, ypos);
+
+				//if it is, do draw it
+				} else {
+					ctx.lineTo(xpos, ypos);
+				}
+			}
+			ctx.stroke();
+		}
 
 					
 					if ($('option_show_grid').checked) {
