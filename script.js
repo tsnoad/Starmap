@@ -609,188 +609,197 @@ function draw() {
 			ctx.stroke();
 		}
 
-					
-					if ($('option_show_grid').checked) {
-						//Draw latitude lines
-						for (var j = -90; j < 90; j += 15) {
-							ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
-							ctx.lineWidth = 2;
-							ctx.beginPath();
-						
-							for (var i = 0; i <= 360; i += 1) {
-								var moo = ((i * Math.PI) / 180);
-						
-								var width = sphererad * Math.cos(deg2rad(j));
-						
-								var height = width * Math.sin(deg2rad(viewlat));
-						
-								var alt = sphererad * Math.sin(deg2rad(j));
-								var altpersp = alt * Math.cos(deg2rad(viewlat));
-						
-	/* 							var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0))); */
-								var xpos = 1800 + (width * Math.cos(moo));
-	/* 							var ypos = 900 - altpersp + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))); */
-								var ypos = 900 - altpersp + (height * Math.sin(moo));
-						
-						
-								var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
-						
-								if (vislim > j || i == 0) {
-									ctx.moveTo(xpos, ypos);
-								} else {
-									ctx.lineTo(xpos, ypos);
-								}
-							}
-							ctx.stroke();
-						}
-	
-						//draw longitude lines
-	/*
-						for (var j = 0; j < 180; j += 15) {
-							ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
-							ctx.lineWidth = 2;
-							ctx.beginPath();
-					
-							var rot = j + .01;
-							rot += obsra_tmp;
-					
-							for (var i = 0; i <= 360; i += 1) {
-								var moo = (i * Math.PI / 180);
-					
-								var height = sphererad * Math.cos(deg2rad(viewlat));
-								var width = sphererad * Math.cos(deg2rad(rot));
-					
-								var boxtopperspheight = sphererad * Math.sin(deg2rad(viewlat));
-								var nonperspheight = sphererad * Math.sin(deg2rad(rot)) * 2;
-								var perspheight = (nonperspheight / (sphererad * 2)) * boxtopperspheight;
-								var perspang = perspheight / (width);
-					
-								var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0)));
-								var ypos = 900 + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))) + ((xpos - 1800) * perspang);
-					
-					
-								var vislim = -1 * (Math.atan(Math.sin(((rot - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
-					
-								if (i - 180 < vislim && i > vislim) {
-									ctx.moveTo(xpos, ypos);
-								} else {
-									ctx.lineTo(xpos, ypos);
-								}
-							}
-							ctx.stroke();
-						}
-	*/
-					}
+		//if we're supposed to be drawing the grid
+		if ($('option_show_grid').checked) {
+			//Draw latitude lines
+			//we need to draw a series of circles from -90deg lat to +90deg lat, at 15deg points
+			for (var j = -90; j < 90; j += 15) {
+				ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+			
+				//for this circle
+				//we'll draw the circle by drawing a line with 360 points around the circle's circumference
+				for (var i = 0; i <= 360; i += 1) {
+					//convert point's lat and lon from degrees to radians
+					var i_rad = deg2rad(i);
+					var j_rad = deg2rad(j);
+			
+					//needs documentation
+					var width = sphererad * Math.cos(j_rad);
+					var height = width * Math.sin(viewlat_rad);
+			
+					//needs documentation
+					var alt = sphererad * Math.sin(deg2rad(j));
+					var altpersp = alt * Math.cos(deg2rad(viewlat));
+			
+					//needs documentation
+					var xpos = 1800 + (width * Math.cos(i_rad));
+					var ypos = 900 - altpersp + (height * Math.sin(i_rad));
+			
+					//for this viewing lat/lon, calculate the longitude the point would have have to be on the visible half of the skydome 
+					var vislim = (Math.atan(Math.sin(((i - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
+			
+					//if this point isn't on the visible half of the skydome, don't draw it
+					if (vislim > j || i == 0) {
+						ctx.moveTo(xpos, ypos);
 
+					//if it is, do draw it
+					} else {
+						ctx.lineTo(xpos, ypos);
+					}
+				}
+				ctx.stroke();
+			}
+	
+/*
+			//draw longitude lines
+			for (var j = 0; j < 180; j += 15) {
+				ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+		
+				var rot = j + .01;
+				rot += obsra_tmp;
+		
+				for (var i = 0; i <= 360; i += 1) {
+					var moo = (i * Math.PI / 180);
+		
+					var height = sphererad * Math.cos(deg2rad(viewlat));
+					var width = sphererad * Math.cos(deg2rad(rot));
+		
+					var boxtopperspheight = sphererad * Math.sin(deg2rad(viewlat));
+					var nonperspheight = sphererad * Math.sin(deg2rad(rot)) * 2;
+					var perspheight = (nonperspheight / (sphererad * 2)) * boxtopperspheight;
+					var perspang = perspheight / (width);
+		
+					var xpos = 1800 + (width * Math.cos(moo) * Math.cos(deg2rad(0))) - (width * Math.sin(moo) * Math.sin(deg2rad(0)));
+					var ypos = 900 + (height * Math.cos(moo) * Math.sin(deg2rad(0))) + (height * Math.sin(moo) * Math.cos(deg2rad(0))) + ((xpos - 1800) * perspang);
+		
+		
+					var vislim = -1 * (Math.atan(Math.sin(((rot - 180) * Math.PI) / 180) / Math.tan((viewlat * Math.PI) / 180)) * 2 * 90) / Math.PI;
+		
+					if (i - 180 < vislim && i > vislim) {
+						ctx.moveTo(xpos, ypos);
+					} else {
+						ctx.lineTo(xpos, ypos);
+					}
+				}
+				ctx.stroke();
+			}
+*/
+		}
 
 
 /*
-ctx.shadowColor = 'rgba(191, 191, 255, 0.1)';
-ctx.fillStyle = "rgba(255, 255, 255, 1)";
-ctx.beginPath();
-
-for (var i in milkyway) {
-	if (!milkyway[i]['action']) continue;
-
-	if (flipped) {
-		milkyway[i]['x'] += 3600;
-	} else {
-		milkyway[i]['x'] -= 3600;
-	}
-	milkyway[i]['y'] -= 18;
-
-	if (milkyway[i]['action'] == "M") {
-		ctx.moveTo(milkyway[i]['x'], milkyway[i]['y']);
-	} else {
-		ctx.lineTo(milkyway[i]['x'], milkyway[i]['y']);
-	}
-}
-
-ctx.closePath();
-ctx.fill();
-ctx.shadowOffsetX = 3600;
-ctx.shadowOffsetY = 18;
-ctx.shadowBlur = 50;
-*/
-
-if (planets && $('option_show_labels').checked) {
-	if (flipped) {
-		//then UNflip the screen
-		ctx.translate(1800, 900);
-		ctx.rotate(Math.PI);
-		ctx.translate(-1800, -900);
-	}
-
-
-	for (var i in planets) {
-		if (!planets[i]['x']) continue;
-
-		ctx.fillStyle = "#000000";
-		ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-
-		var skoon = planets[i]['n'];
-
-		if (skoon == "Sun" || skoon == "Moon") {
-			skoon = "The "+skoon;
-		}
-
-
-		if (flipped) {
-			var skoox = 3600 - planets[i]['x'];
-			var skooy = 1800 - planets[i]['y'] + 30;
-		} else {
-			var skoox = planets[i]['x'];
-			var skooy = planets[i]['y'] + 30;
-		}
-
-		planets[i]['x'] = null;
-		planets[i]['y'] = null;
-		
-		var skoowid = ctx.measureText(skoon);
-		skoowid = skoowid.width;
-		skoowid += 20;
-		skoowid += 1;
-		skoowid /= 2;
-		
-		var skoohgt = 24;
-		skoohgt += 1;
-		skoohgt /= 2;
-		
-		var skoorad = 5;
-		
-		var skooarr = 8;
-		
-		ctx.fillStyle = "rgba(0, 0, 0, 0.75);";
-		ctx.strokeStyle = "rgba(255, 255, 255, 0.15);";
-		ctx.lineWidth = 2;
+		//draw the milky way
+		ctx.shadowColor = 'rgba(191, 191, 255, 0.1)';
+		ctx.fillStyle = "rgba(255, 255, 255, 1)";
 		ctx.beginPath();
-		ctx.arc(skoox - skoowid + skoorad, skooy - skoohgt + skoorad, skoorad, (180 * Math.PI) / 180, (270 * Math.PI) / 180, false);
-		ctx.lineTo(skoox - skooarr, skooy - skoohgt);
-		ctx.lineTo(skoox - 0, skooy - skoohgt - skooarr);
-		ctx.lineTo(skoox + skooarr, skooy - skoohgt);
-		ctx.arc(skoox + skoowid - skoorad, skooy - skoohgt + skoorad, skoorad, (270 * Math.PI) / 180, 0, false);
-		ctx.arc(skoox + skoowid - skoorad, skooy + skoohgt - skoorad, skoorad, 0, (90 * Math.PI) / 180, false);
-		ctx.arc(skoox - skoowid + skoorad, skooy + skoohgt - skoorad, skoorad, (90 * Math.PI) / 180, (180 * Math.PI) / 180, false);
+		
+		//for each of the points we stored ealier
+		for (var i in milkyway) {
+			//skip all the javascript array cruft
+			if (!milkyway[i]['action']) continue;
+		
+			if (flipped) {
+				milkyway[i]['x'] += 3600;
+			} else {
+				milkyway[i]['x'] -= 3600;
+			}
+			milkyway[i]['y'] -= 18;
+		
+			if (milkyway[i]['action'] == "M") {
+				ctx.moveTo(milkyway[i]['x'], milkyway[i]['y']);
+			} else {
+				ctx.lineTo(milkyway[i]['x'], milkyway[i]['y']);
+			}
+		}
+		
 		ctx.closePath();
 		ctx.fill();
-		ctx.stroke();
-	
-		ctx.fillStyle = "rgba(255, 255, 255, 0.5);";
-		ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		ctx.fillText(skoon, skoox, skooy);
-	}
-	
-	if (flipped) {
-		//then UNflip the screen
-		ctx.translate(1800, 900);
-		ctx.rotate(Math.PI);
-		ctx.translate(-1800, -900);
+		ctx.shadowOffsetX = 3600;
+		ctx.shadowOffsetY = 18;
+		ctx.shadowBlur = 50;
+*/
+
+		if (planets && $('option_show_labels').checked) {
+			if (flipped) {
+				//then UNflip the screen
+				ctx.translate(1800, 900);
+				ctx.rotate(Math.PI);
+				ctx.translate(-1800, -900);
+			}
+		
+		
+			for (var i in planets) {
+				if (!planets[i]['x']) continue;
+		
+				ctx.fillStyle = "#000000";
+				ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
+				ctx.textAlign = "center";
+				ctx.textBaseline = "middle";
+		
+				var skoon = planets[i]['n'];
+		
+				if (skoon == "Sun" || skoon == "Moon") {
+					skoon = "The "+skoon;
+				}
+		
+		
+				if (flipped) {
+					var skoox = 3600 - planets[i]['x'];
+					var skooy = 1800 - planets[i]['y'] + 30;
+				} else {
+					var skoox = planets[i]['x'];
+					var skooy = planets[i]['y'] + 30;
+				}
+		
+				planets[i]['x'] = null;
+				planets[i]['y'] = null;
+				
+				var skoowid = ctx.measureText(skoon);
+				skoowid = skoowid.width;
+				skoowid += 20;
+				skoowid += 1;
+				skoowid /= 2;
+				
+				var skoohgt = 24;
+				skoohgt += 1;
+				skoohgt /= 2;
+				
+				var skoorad = 5;
+				
+				var skooarr = 8;
+				
+				ctx.fillStyle = "rgba(0, 0, 0, 0.75);";
+				ctx.strokeStyle = "rgba(255, 255, 255, 0.15);";
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+				ctx.arc(skoox - skoowid + skoorad, skooy - skoohgt + skoorad, skoorad, (180 * Math.PI) / 180, (270 * Math.PI) / 180, false);
+				ctx.lineTo(skoox - skooarr, skooy - skoohgt);
+				ctx.lineTo(skoox - 0, skooy - skoohgt - skooarr);
+				ctx.lineTo(skoox + skooarr, skooy - skoohgt);
+				ctx.arc(skoox + skoowid - skoorad, skooy - skoohgt + skoorad, skoorad, (270 * Math.PI) / 180, 0, false);
+				ctx.arc(skoox + skoowid - skoorad, skooy + skoohgt - skoorad, skoorad, 0, (90 * Math.PI) / 180, false);
+				ctx.arc(skoox - skoowid + skoorad, skooy + skoohgt - skoorad, skoorad, (90 * Math.PI) / 180, (180 * Math.PI) / 180, false);
+				ctx.closePath();
+				ctx.fill();
+				ctx.stroke();
+			
+				ctx.fillStyle = "rgba(255, 255, 255, 0.5);";
+				ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
+				ctx.textAlign = "center";
+				ctx.textBaseline = "middle";
+				ctx.fillText(skoon, skoox, skooy);
+			}
+			
+			if (flipped) {
+				//then UNflip the screen
+				ctx.translate(1800, 900);
+				ctx.rotate(Math.PI);
+				ctx.translate(-1800, -900);
+			}
+		}
 	}
 }
-
-				}
-			}
