@@ -90,8 +90,8 @@ function init() {
 	}
 
 	//update the latitude and longitude displays
-	$('locdis_lat').value = latadj + obslat;
-	$('locdis_lon').value = lonadj + obslon;
+	$('locdis_lat').innerHTML = latadj + obslat;
+	$('locdis_lon').innerHTML = lonadj + obslon;
 
 	//draw the starmap
 	draw();
@@ -339,8 +339,8 @@ function location_change(location_name, location_country, location_lat, location
 	obslon = location_lon;
 
 	//update the latitude and longitude displays
-	$('locdis_lat').value = latadj + obslat;
-	$('locdis_lon').value = lonadj + obslon;
+	$('locdis_lat').innerHTML = latadj + obslat;
+	$('locdis_lon').innerHTML = lonadj + obslon;
 
 	//redraw the starmap
 	draw();
