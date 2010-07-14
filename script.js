@@ -723,82 +723,110 @@ function draw() {
 		ctx.shadowBlur = 50;
 */
 
-		if (planets && $('option_show_labels').checked) {
-			if (flipped) {
-				//then UNflip the screen
-				ctx.translate(1800, 900);
-				ctx.rotate(Math.PI);
-				ctx.translate(-1800, -900);
-			}
-		
-		
-			for (var i in planets) {
-				if (!planets[i]['x']) continue;
-		
-				ctx.fillStyle = "#000000";
-				ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
-				ctx.textAlign = "center";
-				ctx.textBaseline = "middle";
-		
-				var skoon = planets[i]['n'];
-		
-				if (skoon == "Sun" || skoon == "Moon") {
-					skoon = "The "+skoon;
-				}
-		
-		
+		//if we're supposed to be showing labels for planets, bright stars, nebula, etc.
+		if ($('option_show_labels').checked) {
+			//and there are planets, bright stars, nebula, etc. to put labels on
+			if (planets) {
+				//if the the canvas has been flipped
+				//we'll have to unflip and reflip the canvas so the labels aren't upside down
 				if (flipped) {
-					var skoox = 3600 - planets[i]['x'];
-					var skooy = 1800 - planets[i]['y'] + 30;
-				} else {
-					var skoox = planets[i]['x'];
-					var skooy = planets[i]['y'] + 30;
+					//then UNflip the screen
+					ctx.translate(1800, 900);
+					ctx.rotate(Math.PI);
+					ctx.translate(-1800, -900);
 				}
-		
-				planets[i]['x'] = null;
-				planets[i]['y'] = null;
-				
-				var skoowid = ctx.measureText(skoon);
-				skoowid = skoowid.width;
-				skoowid += 20;
-				skoowid += 1;
-				skoowid /= 2;
-				
-				var skoohgt = 24;
-				skoohgt += 1;
-				skoohgt /= 2;
-				
-				var skoorad = 5;
-				
-				var skooarr = 8;
-				
-				ctx.fillStyle = "rgba(0, 0, 0, 0.75);";
-				ctx.strokeStyle = "rgba(255, 255, 255, 0.15);";
-				ctx.lineWidth = 2;
-				ctx.beginPath();
-				ctx.arc(skoox - skoowid + skoorad, skooy - skoohgt + skoorad, skoorad, (180 * Math.PI) / 180, (270 * Math.PI) / 180, false);
-				ctx.lineTo(skoox - skooarr, skooy - skoohgt);
-				ctx.lineTo(skoox - 0, skooy - skoohgt - skooarr);
-				ctx.lineTo(skoox + skooarr, skooy - skoohgt);
-				ctx.arc(skoox + skoowid - skoorad, skooy - skoohgt + skoorad, skoorad, (270 * Math.PI) / 180, 0, false);
-				ctx.arc(skoox + skoowid - skoorad, skooy + skoohgt - skoorad, skoorad, 0, (90 * Math.PI) / 180, false);
-				ctx.arc(skoox - skoowid + skoorad, skooy + skoohgt - skoorad, skoorad, (90 * Math.PI) / 180, (180 * Math.PI) / 180, false);
-				ctx.closePath();
-				ctx.fill();
-				ctx.stroke();
 			
-				ctx.fillStyle = "rgba(255, 255, 255, 0.5);";
-				ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
-				ctx.textAlign = "center";
-				ctx.textBaseline = "middle";
-				ctx.fillText(skoon, skoox, skooy);
-			}
+				//for each object that's going to have a label
+				for (var i in planets) {
+					//skip javascript array cruft
+					if (!planets[i]['x']) continue;
 			
-			if (flipped) {
-				//then UNflip the screen
-				ctx.translate(1800, 900);
-				ctx.rotate(Math.PI);
-				ctx.translate(-1800, -900);
+					ctx.fillStyle = "#000000";
+					ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+			
+					//get the object name from array
+					var pla_n = planets[i]['n'];
+
+					//Moon and Sun should be The Moon and The Sun
+					if (pla_n == "Sun" || pla_n == "Moon") {
+						pla_n = "The "+pla_n;
+					}
+			
+					//if the screen is flipped then we'll need to reverse the x and y coordinates
+					if (flipped) {
+						var pla_x = 3600 - planets[i]['x'];
+						var pla_y = 1800 - planets[i]['y'] + 30;
+					} else {
+						var pla_x = planets[i]['x'];
+						var pla_y = planets[i]['y'] + 30;
+					}
+			
+					//remove coordinates from the objects array, so that the object's location will be updated if it moves
+					planets[i]['x'] = null;
+					planets[i]['y'] = null;
+					
+					//how many pixels wide will the text for the name be
+					//this is used to tell how wide the box, that contains the text, will be
+					var pla_wid = ctx.measureText(pla_n);
+					pla_wid = pla_wid.width;
+					//plus margins
+					pla_wid += 20;
+					//add one pixel, so that the border will not render across multiple pixels
+					pla_wid += 1;
+					//divide by two: half on the left half on the right
+					pla_wid /= 2;
+					
+					//box will always be 24px high
+					var pla_hgt = 24;
+					pla_hgt += 1;
+					pla_hgt /= 2;
+					
+					//box corner radius
+					var pla_rad = 5;
+					
+					//the box has a little arrow that points to the object
+					//this is it's height
+					var pla_arr = 8;
+					
+					//draw the box
+					ctx.fillStyle = "rgba(0, 0, 0, 0.75);";
+					ctx.strokeStyle = "rgba(255, 255, 255, 0.15);";
+					ctx.lineWidth = 2;
+					ctx.beginPath();
+					//top left corner
+					ctx.arc(pla_x - pla_wid + pla_rad, pla_y - pla_hgt + pla_rad, pla_rad, (180 * Math.PI) / 180, (270 * Math.PI) / 180, false);
+					//arrow
+					ctx.lineTo(pla_x - pla_arr, pla_y - pla_hgt);
+					ctx.lineTo(pla_x - 0, pla_y - pla_hgt - pla_arr);
+					ctx.lineTo(pla_x + pla_arr, pla_y - pla_hgt);
+					//top right corner
+					ctx.arc(pla_x + pla_wid - pla_rad, pla_y - pla_hgt + pla_rad, pla_rad, (270 * Math.PI) / 180, 0, false);
+					//bottom right corner
+					ctx.arc(pla_x + pla_wid - pla_rad, pla_y + pla_hgt - pla_rad, pla_rad, 0, (90 * Math.PI) / 180, false);
+					//bottom left corner
+					ctx.arc(pla_x - pla_wid + pla_rad, pla_y + pla_hgt - pla_rad, pla_rad, (90 * Math.PI) / 180, (180 * Math.PI) / 180, false);
+					ctx.closePath();
+					ctx.fill();
+					ctx.stroke();
+				
+					//draw the text
+					ctx.fillStyle = "rgba(255, 255, 255, 0.5);";
+					ctx.font = "8pt Lucida Grande, Lucida Sans, Lucida, Verdana";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+					ctx.fillText(pla_n, pla_x, pla_y);
+				}
+
+				//if the screen was flipped
+				//we now need to unflip it so that the stars are the right way up				
+				if (flipped) {
+					//then UNflip the screen
+					ctx.translate(1800, 900);
+					ctx.rotate(Math.PI);
+					ctx.translate(-1800, -900);
+				}
 			}
 		}
 	}
