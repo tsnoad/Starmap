@@ -5,6 +5,8 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<meta name="viewport" content="width=3600;height=1800;user-scalable=no;initial-scale=1.0;">
+
 		<title>Starmap</title>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
 		<script type="text/javascript" src="script.js"></script>
@@ -103,12 +105,18 @@
 					</div>
 				</div>
 				<hr style="margin: 18px 8px 0px 8px; border: 0px; border-top: 1px solid #999999; border-bottom: 2px solid black;" />
+
+				<div style="padding-top: 10px; text-align: center; color: white; font-family: Lucida Grande; font-size: 12pt; text-shadow: 2px 2px 0px black; vertical-align: middle;"><span id="datedis_hour">00</span>:<span id="datedis_min">00</span>:<span id="datedis_sec">00</span></div>
+
+				<div style="padding-top: 2px; text-align: center; color: white; font-family: Lucida Grande; font-size: 8pt; text-shadow: 2px 2px 0px black; vertical-align: middle;"><span id="datedis_mrd"></span></div>
 		
+				<div style="padding-top: 5px; text-align: center; color: white; font-family: Lucida Grande; font-size: 8pt; text-shadow: 2px 2px 0px black;"><span id="datedis_day"></span> <span id="datedis_month"></span> <span id="datedis_year"></span></div>
+
 				<div style="width: 224px; height: 32px; position: absolute; left: 8px; bottom: 12px;">
 					<div class="panelbutton panelbutton_first panelbutton_pnllftminms panelbutton_double">
 						<input type="button" value="" onclick="$('leftpanel').className='leftpanelouter leftpanelouter_collapsed'; repos_canvas();" class="panelbutton_input" />
 					</div>
-					<input type="button" value="Collapse Navigation" onclick="$('leftpanel').className='leftpanelouter leftpanelouter_collapsed'; repos_canvas();" style="width: 128px; height: 32px; float: left; margin-left: 8px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande; font-size: 8pt; text-align: left; text-shadow: 1px 1px 0px black;" />
+					<input type="button" value="Collapse Navigation" onclick="$('leftpanel').className='leftpanelouter leftpanelouter_collapsed'; repos_canvas();" style="width: 128px; height: 32px; float: left; margin-left: 8px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande; font-size: 8pt; text-align: left; text-shadow: 1px 1px 0px black; cursor: pointer;" />
 				</div>
 			</div>
 			<div class="leftpanelinner leftpanelinner_collapsed">
@@ -139,7 +147,6 @@
 					</div>
 			
 					<div id="locations_list" style="padding: 10px 5px 0px 10px;">
-						type type type
 					</div>
 				</div>
 		
@@ -157,7 +164,7 @@
 					<div class="panelbutton panelbutton_first panelbutton_pnlrtminms panelbutton_double">
 						<input type="button" value="" onclick="$('rightpanel').className='rightpanelouter rightpanelouter_collapsed'; repos_canvas();" class="panelbutton_input" />
 					</div>
-					<input type="button" value="Collapse Location" onclick="$('rightpanel').className='rightpanelouter rightpanelouter_collapsed'; repos_canvas();" style="width: 128px; height: 32px; float: right; margin-right: 8px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande; font-size: 8pt; text-align: right; text-shadow: 1px 1px 0px black;" />
+					<input type="button" value="Collapse Location" onclick="$('rightpanel').className='rightpanelouter rightpanelouter_collapsed'; repos_canvas();" style="width: 128px; height: 32px; float: right; margin-right: 8px; padding: 0px; border: 0px; background-color: transparent; color: white; font-family: Lucida Grande; font-size: 8pt; text-align: right; text-shadow: 1px 1px 0px black; cursor: pointer;" />
 				</div>
 			</div>
 			<div class="rightpanelinner rightpanelinner_collapsed">
@@ -165,58 +172,6 @@
 					<div class="panelbutton panelbutton_first panelbutton_pnlrtmaxms panelbutton_double">
 						<input type="button" value="" onclick="$('rightpanel').className='rightpanelouter rightpanelouter_expanded'; repos_canvas();" class="panelbutton_input" />
 					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Old date control panel: currently hidden -->
-		<div style="display: none;">
-			<div class="container container_date">
-				<div class="container_background"></div>
-				<div class="container_border"></div>
-		
-				<div class="container_year_container">
-					<span class="container_year_ctrls">&nbsp;
-						<span class="container_year_ctrl_sep">/</span>
-						<input type="button" onmousedown="newadj(this, 'dateadj', 60 * 60 * 24 * 30 * 12);" class="container_ctrl_up" value="+" />
-						<input type="button" onmousedown="newadj(this, 'dateadj', -60 * 60 * 24 * 30 * 12);" class="container_ctrl_down" value="-" />
-					</span>
-					<input id="datedis_year" type="text" value="" class="container_year_disp" />
-				</div>
-				<div class="container_month_container">
-					<span class="container_month_ctrls">&nbsp;
-						<span class="container_month_ctrl_sep">/</span>
-						<input type="button" onmousedown="newadj(this, 'dateadj', 60 * 60 * 24 * 30);" class="container_ctrl_up" value="+" />
-						<input type="button" onmousedown="newadj(this, 'dateadj', -60 * 60 * 24 * 30);" class="container_ctrl_down" value="-" />
-					</span>
-					<input id="datedis_month" type="text" value="" class="container_month_disp" />
-				</div>
-				<div class="container_day_container">
-					<span class="container_day_ctrls">&nbsp;
-						<input type="button" onmousedown="newadj(this, 'dateadj', 60 * 60 * 24);" class="container_ctrl_up" value="+" />
-						<input type="button" onmousedown="newadj(this, 'dateadj', -60 * 60 * 24);" class="container_ctrl_down" value="-" />
-					</span>
-					<input id="datedis_day" type="text" value="" class="container_day_disp" />
-				</div>
-		
-				<div class="container_hour_container">
-					<span class="container_hour_ctrls">&nbsp;
-						<span class="container_hour_ctrl_sep">:</span>
-						<input type="button" onmousedown="newadj(this, 'dateadj', 60 * 60);" class="container_ctrl_up" value="+" />
-						<input type="button" onmousedown="newadj(this, 'dateadj', -60 * 60);" class="container_ctrl_down" value="-" />
-					</span>
-					<input id="datedis_hour" type="text" value="" class="container_hour_disp" />
-				</div>
-				<div class="container_minute_container">
-					<span class="container_minute_ctrls">&nbsp;
-						<span class="container_minute_ctrl_sep">:</span>
-						<input type="button" onmousedown="newadj(this, 'dateadj', 60);" class="container_ctrl_up" value="+" />
-						<input type="button" onmousedown="newadj(this, 'dateadj', -60);" class="container_ctrl_down" value="-" />
-					</span>
-					<input id="datedis_min" type="text" value="" class="container_minute_disp" />
-				</div>
-				<div class="container_second_container">
-					<input id="datedis_sec" type="text" value="" class="container_hour_disp" />
 				</div>
 			</div>
 		</div>

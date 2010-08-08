@@ -60,6 +60,7 @@ $create_table_sql = "
 		name TEXT,
 		country TEXT,
 		population BIGINT,
+		timezone TEXT,
 		lat FLOAT,
 		lon FLOAT
 	);
@@ -73,7 +74,7 @@ file_put_contents("create_location_database.sql", "");
 file_put_contents("create_location_database.sql", "$create_table_sql", FILE_APPEND);
 
 file_put_contents("create_location_database.sql", "\n", FILE_APPEND);
-file_put_contents("create_location_database.sql", "COPY locations (name, country, population, lat, lon) FROM stdin WITH DELIMITER '|' NULL AS '';\n", FILE_APPEND);
+file_put_contents("create_location_database.sql", "COPY locations (name, country, population, timezone, lat, lon) FROM stdin WITH DELIMITER '|' NULL AS '';\n", FILE_APPEND);
 
 
 $cities = file_get_contents("cities15000.txt");
@@ -93,7 +94,9 @@ foreach ($cityrows as $cityrow) {
 
 	$citypopulation = $citycolumns[14];
 
-	file_put_contents("create_location_database.sql", "{$cityname}|{$citycountry}|{$citypopulation}|{$citylat}|{$citylon}\n", FILE_APPEND);
+	$citytimezone = $citycolumns[17];
+
+	file_put_contents("create_location_database.sql", "{$cityname}|{$citycountry}|{$citypopulation}|{$citytimezone}|{$citylat}|{$citylon}\n", FILE_APPEND);
 
 }
 

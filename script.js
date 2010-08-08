@@ -19,6 +19,9 @@ var raadj = 0;
 //date offset as adjusted with the clock controls
 var dateadj = 0;
 
+//timezone offset of the observer's location
+var tmzofs = 36000;
+
 //keep track of rotation state past the equator
 var flipped = false;
 
@@ -33,12 +36,12 @@ function deg2rad(deg) {
 	return (deg * Math.PI) / 180;
 }
 
+/*
+ * Get a named cookie from the browser
+ */
 function get_cookie(name) {
-/* console.log(name); */
-
+	//make sure that the browser has some cookies that belong to us
 	if (document.cookie.length > 1) {
-/* console.log(document.cookie); */
-
 		c_start = document.cookie.indexOf(name+"=");
 		
 		if (c_start != -1) {
@@ -47,34 +50,25 @@ function get_cookie(name) {
 			
 			if (c_end == -1) c_end = document.cookie.length;
 			
-/* console.log(document.cookie.substring(c_start, c_end)); */
-return unescape(document.cookie.substring(c_start, c_end));
+			return unescape(document.cookie.substring(c_start, c_end));
 		}
 	}
 }
-
 
 /*
  * Start putting the page together
  */
 function init() {
-	//set the clock
-	adjdatedis();
-
-	//center the starmap on screen
-	repos_canvas();
-
-	//start keeping track of sidereal time
-	rottime_repeat();
-
-	//initial size of the skydome should match the size of the browser
-	zmadj = (Math.min(self.innerWidth, self.innerHeight) / 2) * 1.1;
-
+	//get city and county name from the cookie.
 	var location_name = get_cookie("location_name");
 	var location_country = get_cookie("location_country");
+	//get observer's timezone offset from cookie. if none exists default in tmzofs variable will be used
+	var location_timezone = get_cookie("location_timezone");
+	//get observer's lat/lon from cookie. if none exists default in obslat/obslon variables will be used
 	var location_lat = get_cookie("location_lat");
 	var location_lon = get_cookie("location_lon");
 
+	//if cookie exists
 	if (location_name) {
 		//update the current location labels
 		$('location_current_city').innerHTML = location_name;
@@ -87,14 +81,33 @@ function init() {
 		//update the observer latitude and longitude
 		obslat = parseFloat(location_lat);
 		obslon = parseFloat(location_lon);
+
+		//update the observer's timezone offser
+		tmzofs = location_timezone;
 	}
 
+	//set the clock
+	adjdatedis();
+
+	//center the starmap on screen
+	repos_canvas();
+
+	//start keeping track of sidereal time
+	rottime_repeat();
+
+	//initial size of the skydome should match the size of the browser
+	zmadj = (Math.min(self.innerWidth, self.innerHeight) / 2) * 1.1;
+
 	//update the latitude and longitude displays
-	$('locdis_lat').innerHTML = latadj + obslat;
-	$('locdis_lon').innerHTML = lonadj + obslon;
+	$('locdis_lat').innerHTML = (latadj + obslat).toString() + "\u00B0";
+	$('locdis_lon').innerHTML = (lonadj + obslon).toString() + "\u00B0";
 
 	//draw the starmap
 	draw();
+
+	if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+	  window.document.body.className = 'ios';
+	}
 
 	//be sure to re-center the starmap if the browser is resized
 	window.onresize = function () {
@@ -114,6 +127,10 @@ function rottime() {
 	var unix_seconds = giraffe.getTime() / 1000;
 	//add the date offset
 	unix_seconds += dateadj;
+
+	//add the timezone offset
+	unix_seconds += parseFloat(tmzofs);
+
 	//days since the unix epoch for the offset date
 	var unix_days = unix_seconds / 86400;
 	//number of days since the start of the julian calendar
@@ -268,17 +285,29 @@ function adjdatedis() {
 	//create a date object with the current date
 	var curdate = new Date();
 
-	//create a date element with the current date PLUS the date offset
-	var specdate = new Date(curdate.getTime() + (dateadj * 1000));
+	//create a date element with:
+	//the current timestamp, which will be the same, no matter where we are in the world
+	//plus the offset for observer's current timezone.
+	//this will give us a freakish local timestamp, that will give the time/date for the observer's location, if we retrieve it with getUTC
+	//yes, I know it's horrible, but since we can't set a locale in javascript, this is the only way to dynamically change timezones
+	//plus the date adjustment offset - or how much the date has been manually changed by the user
+	var specdate = new Date(curdate.getTime() + (tmzofs * 1000) + (dateadj * 1000));
+
+	//so we can show month names, I hope these don't change anytime soon
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
 	//update year, month, day, hour, etc. clock display
-	$('datedis_year').value = specdate.getFullYear();
-	$('datedis_month').value = specdate.getMonth() + 1;
-	$('datedis_day').value = specdate.getDate();
+	$('datedis_year').innerHTML = specdate.getUTCFullYear();
+	$('datedis_month').innerHTML = monthNames[specdate.getUTCMonth()];
+	$('datedis_day').innerHTML = specdate.getUTCDate();
+
+	$('datedis_mrd').innerHTML = (specdate.getUTCHours() < 12 ? "AM" : "PM");
 	
-	$('datedis_hour').value = specdate.getHours();
-	$('datedis_min').value = specdate.getMinutes();
-	$('datedis_sec').value = specdate.getSeconds();
+	$('datedis_hour').innerHTML = specdate.getUTCHours();
+	//display minutes and seconds with leading zeros
+	//fuck, I hate javascript
+	$('datedis_min').innerHTML = (specdate.getUTCMinutes() < 10 ? "0" : "") + specdate.getUTCMinutes();
+	$('datedis_sec').innerHTML = (specdate.getUTCSeconds() < 10 ? "0" : "") + specdate.getUTCSeconds();
 	
 	//update again in 0.1 seconds
 	setTimeout("adjdatedis();", 100);
@@ -320,7 +349,7 @@ function location_change_list() {
  * Set the current location
  * called when the user clicks on one of the location options
  */
-function location_change(location_name, location_country, location_lat, location_lon) {
+function location_change(location_name, location_country, location_timezone, location_lat, location_lon) {
 	//show the current location
 	$('location_current_container').style.display = "block";
 	//hide the new location input
@@ -338,18 +367,30 @@ function location_change(location_name, location_country, location_lat, location
 	obslat = location_lat;
 	obslon = location_lon;
 
+	//update the observer's timezone offset
+	tmzofs = location_timezone;
+
 	//update the latitude and longitude displays
-	$('locdis_lat').innerHTML = latadj + obslat;
-	$('locdis_lon').innerHTML = lonadj + obslon;
+	$('locdis_lat').innerHTML = (latadj + obslat).toString() + "\u00B0";
+	$('locdis_lon').innerHTML = (lonadj + obslon).toString() + "\u00B0";
+
+	//recalculate observer's sidereal time
+	rottime();
 
 	//redraw the starmap
 	draw();
 
+	//the cookies that we're about to write should last for a year (too long?)
+	var cookie_date = new Date();
+	cookie_date.setTime(cookie_date.getTime()+(365*24*60*60*1000));
+	var cookie_expires = "expires="+cookie_date.toGMTString()+";";
+
 	//store the location in a cookie
-	document.cookie = "location_name="+escape(location_name);
-	document.cookie = "location_country="+escape(location_country);
-	document.cookie = "location_lat="+escape(location_lat);
-	document.cookie = "location_lon="+escape(location_lon);
+	document.cookie = "location_name="+escape(location_name)+"; "+cookie_expires+" path=/";
+	document.cookie = "location_country="+escape(location_country)+"; "+cookie_expires+" path=/";
+	document.cookie = "location_timezone="+escape(location_timezone)+"; "+cookie_expires+" path=/";
+	document.cookie = "location_lat="+escape(location_lat)+"; "+cookie_expires+" path=/";
+	document.cookie = "location_lon="+escape(location_lon)+"; "+cookie_expires+" path=/";
 }
 
 /*

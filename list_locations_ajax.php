@@ -50,7 +50,7 @@
 
 	//get all locations that match the entered text
 	//sanitisation required
-	$locations = runQuery("SELECT name, country, lat, lon FROM locations WHERE name ILIKE '{$user_location}%' ORDER BY population DESC LIMIT 10;");
+	$locations = runQuery("SELECT name, country, timezone, lat, lon FROM locations WHERE name ILIKE '{$user_location}%' ORDER BY population DESC LIMIT 10;");
 	
 	//if no locations found
 	if (empty($locations)) {
@@ -62,8 +62,29 @@
 	
 	//for all the locations that match the entered text
 	foreach ($locations as $location) {
+		//for this location
+		$dateTimeZone = new DateTimeZone($location['timezone']);
+		//find all the timezone offset transitions
+		//transitions are dates when the offset changes, for example when daylight savings starts or stops
+		$timeTransitions = $dateTimeZone->getTransitions();
+
+		//reverse the array, so that transitions start in the future, and end in the past
+		$timeTransitions = array_reverse($timeTransitions);
+
+
+		//loop through all transitions for this location
+		foreach ($timeTransitions as $timeTransition) {
+			//so we can find the next transition that starts in the past (remember we're looping through in reverse order)
+			if ($timeTransition['ts'] <= time()) {
+				//now we have the current offset
+				$timeOffset = $timeTransition['offset'];
+				//and we're done for this location's transitions
+				break;
+			}
+		}
+
 		//echo out the location, with a hover effect, and that can be clicked on to set the location
-		echo "<div style=\"padding: 5px 0px 0px 0px; color: #999999; font-family: Lucida Grande; font-size: 8pt; cursor: pointer;\" onmouseover=\"\" onmouseout=\"\" onclick=\"location_change('{$location['name']}', '{$location['country']}', ".round($location['lat'], 2).", ".round($location['lon'], 2).");\"><span>{$location['name']}</span><span style=\"\">, {$location['country']}</span></div>";
+		echo "<div style=\"padding: 5px 0px 0px 0px; color: #999999; font-family: Lucida Grande; font-size: 8pt; cursor: pointer;\" onmouseover=\"\" onmouseout=\"\" onclick=\"location_change('{$location['name']}', '{$location['country']}', '{$timeOffset}', ".round($location['lat'], 2).", ".round($location['lon'], 2).");\"><span>{$location['name']}</span><span style=\"\">, {$location['country']}</span></div>";
 	}
 
 ?>
