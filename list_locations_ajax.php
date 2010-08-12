@@ -6,6 +6,10 @@
 	 * Called by ajax to get location options that match the user's typed location
 	 */
 
+$time = microtime(true);
+
+file_put_contents("/tmp/starmap.log", "\n\n started logging: ".(microtime(true) - $time)."\n", FILE_APPEND);
+
 
 	/*
 	 * Connect to the database and ask for data ^_^
@@ -62,14 +66,23 @@
 	
 	//for all the locations that match the entered text
 	foreach ($locations as $location) {
+
+file_put_contents("/tmp/starmap.log", "location iteration: ".(microtime(true) - $time)."\n", FILE_APPEND);
+
 		//for this location
 		$dateTimeZone = new DateTimeZone($location['timezone']);
+
+file_put_contents("/tmp/starmap.log", "location timezone created: ".(microtime(true) - $time)."\n", FILE_APPEND);
+
 		//find all the timezone offset transitions
 		//transitions are dates when the offset changes, for example when daylight savings starts or stops
 		$timeTransitions = $dateTimeZone->getTransitions();
 
+file_put_contents("/tmp/starmap.log", "location transitions fetched: ".(microtime(true) - $time)."\n", FILE_APPEND);
+
 		//reverse the array, so that transitions start in the future, and end in the past
 		$timeTransitions = array_reverse($timeTransitions);
+file_put_contents("/tmp/starmap.log", "location transition reversed: ".(microtime(true) - $time)."\n", FILE_APPEND);
 
 
 		//loop through all transitions for this location
@@ -83,8 +96,14 @@
 			}
 		}
 
+file_put_contents("/tmp/starmap.log", "location transitions processed: ".(microtime(true) - $time)."\n", FILE_APPEND);
+
 		//echo out the location, with a hover effect, and that can be clicked on to set the location
 		echo "<div style=\"padding: 5px 0px 0px 0px; color: #999999; font-family: Lucida Grande; font-size: 8pt; cursor: pointer;\" onmouseover=\"\" onmouseout=\"\" onclick=\"location_change('{$location['name']}', '{$location['country']}', '{$timeOffset}', ".round($location['lat'], 2).", ".round($location['lon'], 2).");\"><span>{$location['name']}</span><span style=\"\">, {$location['country']}</span></div>";
+
+file_put_contents("/tmp/starmap.log", "location echod: ".(microtime(true) - $time)."\n", FILE_APPEND);
 	}
+
+file_put_contents("/tmp/starmap.log", "finished: ".(microtime(true) - $time)."\n", FILE_APPEND);
 
 ?>
