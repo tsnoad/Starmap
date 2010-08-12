@@ -74,6 +74,7 @@ file_put_contents("/tmp/starmap.log", "location iteration: ".(microtime(true) - 
 
 file_put_contents("/tmp/starmap.log", "location timezone created: ".(microtime(true) - $time)."\n", FILE_APPEND);
 
+/*
 		//find all the timezone offset transitions
 		//transitions are dates when the offset changes, for example when daylight savings starts or stops
 		$timeTransitions = $dateTimeZone->getTransitions();
@@ -95,6 +96,14 @@ file_put_contents("/tmp/starmap.log", "location transition reversed: ".(microtim
 				break;
 			}
 		}
+*/
+
+
+$dateTime = new DateTime("now", $dateTimeZone);
+
+file_put_contents("/tmp/starmap.log", "location time created: ".(microtime(true) - $time)."\n", FILE_APPEND);
+
+$timeOffset = $dateTimeZone->getOffset($dateTime);
 
 file_put_contents("/tmp/starmap.log", "location transitions processed: ".(microtime(true) - $time)."\n", FILE_APPEND);
 
